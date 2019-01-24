@@ -1,8 +1,9 @@
-#include <stdio.h>
-
 // Prints the value of EOF
 
-main () {
+#include <stdio.h>
+
+int main(void)
+{
     int c;
 
     c = EOF;

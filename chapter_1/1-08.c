@@ -1,21 +1,26 @@
-#include <stdio.h>
-
 // Prints the number of blanks,
 // tabs and newlines in input
 
-main () {
+#include <stdio.h>
+
+int main(void)
+{
     int c;
     int blanks = 0, tabs = 0, newlines = 0;
 
-// Counts the blanks, tabs and newlines
-    while ((c = getchar()) != EOF) {
-        if (c == ' ') {
+    // Counts the blanks, tabs and newlines
+    while ((c = getchar()) != EOF)
+    {
+        if (c == ' ')
+        {
             blanks++;
         }
-        else if (c == '\t') {
+        else if (c == '\t')
+        {
             tabs++;
         }
-        else if (c == '\n') {
+        else if (c == '\n')
+        {
             newlines++;
         }
     }

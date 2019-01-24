@@ -1,8 +1,9 @@
-#include <stdio.h>
-
 // Prints the value of the expression getchar() != EOF
 
-main () {
+#include <stdio.h>
+
+int main(void)
+{
     printf("The expression's value is equal to %d", getchar() != EOF);
 }
 

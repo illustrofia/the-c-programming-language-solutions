@@ -1,10 +1,11 @@
-#include <stdio.h>
-
 // Prints a Celsius-Fahrenheit table
 // for celsius = 0, 20,..., 300;
 // floating point version
 
-main () {
+#include <stdio.h>
+
+int main(void)
+{
     float fahr, celsius;
     int lower, upper, step;
 
@@ -17,7 +18,8 @@ main () {
     // Prints a header before the table
     printf("Celsius \t Fahrenheit\n\n");
 
-    while (celsius <= upper) {
+    while (celsius <= upper)
+    {
         fahr = (9.0 / 5.0 * celsius) + 32;
         printf("%3.0f \t\t %6.0f\n", celsius, fahr);
         celsius += step;

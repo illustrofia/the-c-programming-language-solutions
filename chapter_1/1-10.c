@@ -1,27 +1,33 @@
-#include <stdio.h>
-
 // Copies input to output, replacing each
 // tab by \t, each backspace by \b and 
 // each backspace by \\
 
-main () {
+#include <stdio.h>
+
+int main(void)
+{
     int c;
 
-    while ((c = getchar()) != EOF) {
+    while ((c = getchar()) != EOF)
+    {
 
-        if (c == '\b') {
+        if (c == '\b')
+        {
             putchar('\\');
             putchar('b');
         }
-        else if (c == '\t') {
+        else if (c == '\t')
+        {
             putchar('\\');
             putchar('t');
         }
-        else if (c == '\\') {
+        else if (c == '\\')
+        {
             putchar('\\');
             putchar('\\');
         }
-        else {
+        else
+        {
             putchar(c);
         }
     }

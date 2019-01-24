@@ -1,13 +1,17 @@
+// Replaces each string of one or more blanks by a single blank
+
 #include <stdio.h>
 
-main () {
+int main(void)
+{
     int c, prev_c;
 
     c = getchar();
-    while ((c = getchar()) != EOF) {
-        
+    while ((c = getchar()) != EOF)
+    {
         // The character currently in c and the one in prev_c can't be both blanks
-        if (!(c == ' ' && prev_c == ' ')) {
+        if (!(c == ' ' && prev_c == ' '))
+        {
             putchar(c);
         }
         prev_c = c;

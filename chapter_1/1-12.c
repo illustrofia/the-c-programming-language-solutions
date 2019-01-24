@@ -1,20 +1,24 @@
+// Counts lines, words, and characters in input
+
 #include <stdio.h>
 
 #define IN 1
 #define OUT 0
 
-// Counts lines, words, and characters in input
-
-main () {
+int main(void)
+{
     int c, state;
 
     state = OUT;
-    while ((c = getchar()) != EOF) {
-        if (c != ' ' && c != '\n' && c != '\t') {
+    while ((c = getchar()) != EOF)
+    {
+        if (c != ' ' && c != '\n' && c != '\t')
+        {
             state = IN;
             putchar(c);
         }
-        else if (state == IN) {
+        else if (state == IN)
+        {
             state = OUT;
             putchar('\n');
         }
