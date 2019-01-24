@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-//  prints the value of EOF
+// Prints the value of EOF
 
 main () {
     int c;
@@ -10,6 +10,6 @@ main () {
 }
 
 
-//  Observations
+// Observations
 
-//      The value of EOF is -1
+// The value of EOF is -1
