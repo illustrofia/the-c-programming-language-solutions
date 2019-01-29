@@ -9,15 +9,13 @@ int main(void)
     float fahr, celsius;
     int lower, upper, step;
 
-    lower = 0;      // lower temperature limit
-    upper = 300;    // upper temperature limit
-    step = 20;      // step size
+    lower = 0;      // Lower temperature limit
+    upper = 300;    // Upper temperature limit
+    step = 20;      // Step size
 
     celsius = lower;
 
-    // Prints a header before the table
     printf("Celsius \t Fahrenheit\n\n");
-
     while (celsius <= upper)
     {
         fahr = (9.0 / 5.0 * celsius) + 32;

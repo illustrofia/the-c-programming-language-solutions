@@ -2,7 +2,6 @@
 
 #include <stdio.h>
 
-// Boolean values meaning IN or OUT of word
 #define IN 1
 #define OUT 0
 
@@ -13,7 +12,6 @@ int main(void)
 {
     int lengths[LIMIT];
     
-    // Initialization of the word lengths array with 0
     for (int i = 0; i < LIMIT; i++)
     {
         lengths[i] = 0;
@@ -36,7 +34,6 @@ int main(void)
         else if (state == IN)
         {
             state = OUT;
-            // We increment the value corresponding the word length
             lengths[letters]++;
 
             if (lengths[letters] > max)
