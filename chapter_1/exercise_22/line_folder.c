@@ -75,5 +75,4 @@ void format(char line[], int length, int limit)
             }
         }
     }
-    
 }
