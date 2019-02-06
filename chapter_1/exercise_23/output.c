@@ -37,7 +37,7 @@ int main(void)
             {
                 state = OUT;
             }
-            else if (state == OUT && state != INQUOTE)
+            else if (state == OUT)
             {
                 if ((line[i] == '/' && line[i + 1] == '/') || (line[i] == '/' && line[i + 1] == '*'))
                 {
@@ -83,11 +83,13 @@ int main(void)
                 }
             }
         }
+
         
         
             printf("%s", line);
         
     }
+
     return 0;
 }
 
@@ -101,11 +103,13 @@ int getsline(char s[], int limit)
     {
         s[i] = c;
     }
+
     if (c == '\n')
     {
         s[i] = c;
         i++;
     }
+    
     s[i] = '\0';
     return i;
 }

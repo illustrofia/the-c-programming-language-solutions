@@ -37,7 +37,6 @@ int main(void)
     brc = 0;
     sq = 0;
     dq = 0;
-    comments = 0;
 
     for (int i = 0; i < 10; i++)
     {
@@ -87,18 +86,15 @@ int main(void)
                 }
                 else if (line[i] == '}')
                 {
-                    brc--;
-                    braces[brc] = 0;
+                    braces[--brc] = 0;
                 }
                 else if (line[i] == '[')
                 {
                     brackets[brk] = line_counter;
-                    brk++;
                 }
                 else if (line[i] == ']')
                 {
-                    brk--;
-                    brackets[brk] = 0;
+                    brackets[--brk] = 0;
                 }
                 else if (line[i] == '(')
                 {
@@ -107,74 +103,70 @@ int main(void)
                 }
                 else if (line[i] == ')')
                 {
-                    p--;
-                    parantheses[p] = 0;
+                    braces[--p] = 0;
                 }
             }
-            else if (state == INQUOTE && line[i] == line[quote_start] && (line[i - 1] != '\\' || line[i - 2] == '\\'))
+            else if (state == INQUOTE && line[i] == line[quote_start])
             {
                 state = OUT;
 
                 if (line[i] == '"')
                 {
-                    dq--;
-                    dquotes[dq] = 0;
+                    dquotes[--dq] = 0;
                 }
                 else if (line[i] == '\'')
                 {
-                    sq--;
-                    squotes[sq] = 0;
+                    squotes[--sq] = 0;
                 }
             }
             else if (state == IN)
             {
-                if (line[i] == '\n' && comment_start >= 0 && line[comment_start + 1] == '/')
+                if (line[i] == '\n' && line[comment_start + 1] == '/')
                 {
                     state = OUT;
                     
                     comments = 0;
                 }
-                else if ((line[i] == '*' && line[i + 1] == '/') && comment_start == -1)
+                else if ((line[i] == '*' && line[i + 1] == '/') && !(line[comment_start] == '/' && line[comment_start + 1] == '/'))
                 {
                     state = OUT;
                     
                     comments = 0;
                 }
-                else if (line[i] == '\n' && comment_start >= 0 && line[comment_start + 1] == '*')
+                else if (line[i] == '\n' && line[comment_start + 1] == '*')
                 {
-                    comment_start = -1;
+                    comment_start = 0;
                 }
             }
         }
     }
 
-    if (comments)
-    {
-        printf("Unclosed comment starting at line %i\n\n", comments);
-    }
-
     // Prints error messages
-    for (int i = 0; i < 10; i++)
+    for (int i; i < 10; i++)
     {
+        if (comments)
+        {
+            printf("Unclosed comment starting at line %i", comments);
+        }
         if (squotes[i])
         {
-            printf("Unclosed single quote starting at line %i\n\n", squotes[i]);
+            printf("Unclosed comment starting at line %i", squotes[i]);
         }
         if (dquotes[i])
         {
-            printf("Unclosed double quote starting at line %i\n\n", dquotes[i]);
+            printf("Unclosed comment starting at line %i", dquotes[i]);
         }
         if (parantheses[i])
         {
-            printf("Unclosed parantheses starting at line %i\n\n", parantheses[i]);
+            printf("Unclosed comment starting at line %i", parantheses[i]);
         }
         if (brackets[i])
         {
-            printf("Unclosed brackets starting at line %i\n\n", brackets[i]);
+            printf("Unclosed comment starting at line %i", brackets[i]);
         }
         if (braces[i])
         {
-            printf("Unclosed curly braces starting at line %i\n\n", braces[i]);
+            printf("Unclosed comment starting at line %i", braces[i]);
         }
     }
 
