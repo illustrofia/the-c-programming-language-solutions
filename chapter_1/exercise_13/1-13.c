@@ -40,6 +40,7 @@ int main(void)
             { 
                 max = lengths[letters];
             }
+
             letters = 0;
         }
     }
@@ -60,9 +61,11 @@ int main(void)
                 {
                     printf("    ");
                 }
+
                 printf(" ");
             }
         }
+
         printf("\n");
     }
 
@@ -81,6 +84,7 @@ int main(void)
             }
         }
     }
+    
     printf("\n");
 }
 

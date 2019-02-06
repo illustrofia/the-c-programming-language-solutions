@@ -24,11 +24,12 @@ int main(void)
             copy(line, longest);
         }
     }
-    // If there was a line
+
     if (maxlen > 0)
     {
         printf("\nLongest line is %d characters:\n%s\n", maxlen, longest);
     }
+
     return 0;
 }
 
@@ -42,11 +43,13 @@ int getsline(char s[], int lim)
     {
         s[i] = c;
     }
+
     if (c == '\n')
     {
         s[i] = c;
         i++;
     }
+    
     s[i] = '\0';
     return i;
 }

@@ -17,6 +17,7 @@ int main(void)
         if (c == '\n') {
             nl++;
         }
+        
         if (c == ' ' || c == '\n' || c == '\t')
         {
             state = OUT;
@@ -27,6 +28,7 @@ int main(void)
             nw++;
         }
     }
+
     printf("%d lines, %d words, %d characters\n", nl, nw, nc);
 }
 

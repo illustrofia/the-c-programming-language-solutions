@@ -43,6 +43,7 @@ int main(void)
                 }
             }
         }
+
         printf("\n");
     }
 
@@ -51,6 +52,7 @@ int main(void)
     {
         printf(" %c  ", i);
     }
+    
     printf("\n");
 }
 

@@ -14,6 +14,7 @@ int main(void)
         {
             putchar(c);
         }
+        
         prev_c = c;
     }
 }

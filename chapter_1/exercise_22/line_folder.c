@@ -21,6 +21,7 @@ int main(void)
         format(line, length, MAXLENGTH);
         printf("\n%s", line);
     }
+
     return 0;
 }
 
@@ -34,11 +35,13 @@ int getsline(char s[], int limit)
     {
         s[i] = c;
     }
+
     if (c == '\n')
     {
         s[i] = c;
         i++;
     }
+
     s[i] = '\0';
     return i;
 }
@@ -60,6 +63,7 @@ void format(char line[], int length, int limit)
             j += limit;
             j++;
         }
+        
         j--;
         if (j == last_blank)
         {
