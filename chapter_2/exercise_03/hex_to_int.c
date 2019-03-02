@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <math.h>
 
 #define MAXHEX 100
@@ -8,47 +9,35 @@ int alternate_htoi(char hex[]);
 
 int main(void)
 {
-    char hex[MAXHEX] = "f";
+    char hex[MAXHEX] = "0Xf23";
 
-    printf("%i\n", alternate_htoi(hex));
+    printf("%s\n%i\n", hex, alternate_htoi(hex));
 
     return 0;
 }
 
-// Converts string of hexadecimal digits into equivalent integer value
-int alternate_htoi(char hex[])
+// Converts string of hexadecimal number into equivalent integer value
+int alternate_htoi(char s[])
 {
-    int i;
-    int hexquivalent;
-    int spare;
+    int n = 0;
 
-    i = 0;
-    while (hex[i] != EOF)
+    int limit = (s[0] == '0') ? 2 : 0;
+
+    for (int i = strlen(s) - 1; i >= limit; i--)
     {
-        i++;
-    }
-
-    hexquivalent = 0;
-    for (int j = i; j >= 0; j--)
-    {
-        if (hex[j] >= 'A' && hex[j] <= 'F')
+        if (s[i] <= '9')
         {
-            spare = 10 + hex[j] - 'A';
+            n += pow(16, strlen(s) - 1 - i) * (s[i] - '0');
         }
-        else if (hex[j] >= 'a' && hex[j] <= 'f')
+        else if (s[i] <= 'F')
         {
-            spare = 10 + hex[j] - 'a';
+            n += pow(16, strlen(s) - 1 - i) * (s[i] - 'A' + 10);
         }
-
-        if (hex[i] >= '0' && hex[i] <= '9')
+        else if (s[i] <= 'f')
         {
-            hexquivalent += pow(16, i - j) * (hex[i] - '0');
-        }
-        else
-        {
-            hexquivalent += pow(16, i - j) * spare;
+            n += pow(16, strlen(s) - 1 - i) * (s[i] - 'a' + 10);
         }
     }
 
-    return hexquivalent;
+    return n;
 }
