@@ -14,20 +14,39 @@ int getop(char *s);
 int main(void)
 {
     char s[MAXLEN];
+    char t[MAXLEN];
 
+    // Testing getsline() and reverse()
     printf("String to reverse: ");
-
     getsline(s);
 
     reverse(s);
 
     printf("Result: %s\n\n", s);
 
+    // Testing atoi()
     printf("String to convert into integer: ");
-
     getsline(s);
 
-    printf("String \"%s\" into integer: %i\n", s, atoi(s));
+    printf("String \"%s\" into integer: %i\n\n", s, atoi(s));
+
+    // Testing strindex()
+    printf("String to search into: ");
+    getsline(s);
+
+    printf("String to find: ");
+    getsline(t);
+
+    int index = strindex(s, t);
+
+    if (index >= 0)
+    {
+        printf("String t found in s at index %i.\n\n", index);
+    }
+    else
+    {
+        printf("String t not found in s.\n\n");
+    }
 
     return 1;
 }
@@ -84,25 +103,33 @@ int atoi(char *s)
 
     return sign * n;
 }
-/*
+
 // strindex: return index of t in s, -1 if none
 int strindex(char *s, char *t)
 {
-    int i, j, k;
+    char *t_copy = t, *s_copy = s;
+    int index = 0;
 
-    for (i = 0; s[i] != '\0'; i++)
+    while (*s)
     {
-        for (j = i, k = 0; t[k] != '\0' && s[j] == t[k]; j++, k++);
+        while (*s_copy++ == *t_copy++ && *t_copy);
 
-        if (k > 0 && t[k] == '\0')
+        if (!*t_copy)
         {
-            return i;
+            return index;
         }
+
+        t_copy = t;
+        
+        s_copy = ++s;
+
+        index++;
     }
 
     return -1;
 }
 
+/*
 // getop: get next operator or numeric operand (for RPC)
 int getop(char *s)
 {
