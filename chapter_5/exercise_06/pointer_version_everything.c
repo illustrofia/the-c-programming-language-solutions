@@ -69,7 +69,7 @@ void getsline(char *s)
     }
 
     *s = '\0';
-}
+} 
 
 // reverse: reverses string s in place
 void reverse(char *s)
