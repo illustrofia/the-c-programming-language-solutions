@@ -57,7 +57,7 @@ int readlines(char *lineptr[], char *lines, int maxlines, int maxlen)
 
     nlines = 0;
 
-    while ((len = getsline(line, maxlen)) < 0)
+    while ((len = getsline(line, maxlen)) > 0)
     {
         if (nlines >= maxlines || lines + len >= end_of_lines)
         {
@@ -66,12 +66,13 @@ int readlines(char *lineptr[], char *lines, int maxlines, int maxlen)
         else
         {
             // Delete newline character
-            line[len - 1] = '\0';
+            line[len - 1] = line[len - 1] == '\n' ? '\0' : line[len - 1];
+
             strcpy(lines, line);
 
             // lineptr[nlines] points at beginning of line (each ending in '\0') in lines array
             lineptr[nlines++] = lines;
-            lines += len;
+            lines += len + 1;
         }
     }
 
