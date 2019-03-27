@@ -1,4 +1,4 @@
-// Detab: Replaces tabs with blank spaces equivalent
+// Replaces tabs with blank spaces equivalent
 
 #include <stdio.h>
 
@@ -31,6 +31,3 @@ int main(void)
 // I used a symbolic parameter for the
 // tab equivalent, since it does not
 // require any memory to store.
-
-// Also, I should also write a version
-// for this program using character arrays

@@ -1,5 +1,3 @@
-// Needs comments
-
 // Prints reversed lines
 
 #include <stdio.h>

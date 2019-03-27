@@ -1,6 +1,5 @@
-// Needs comments
-
-// Detab: Replaces sequences of blanks with tab stop
+// Replaces strings of blanks by the minimum number
+// of tabs and blanks to achieve the same spacing.
 
 #include <stdio.h>
 
@@ -12,14 +11,17 @@ int main(void)
     int blanks;     // Stores number of blanks
 
     blanks = 0;
+
     while ((c = getchar()) != EOF)
     {
         if (c == ' ')
         {
             blanks++;
+
             if (blanks == TAB)
             {
                 putchar('\t');
+
                 blanks = 0;
             }
         }
@@ -36,6 +38,3 @@ int main(void)
     
     return 0;
 }
-
-
-// Write a version for this program using character arrays
