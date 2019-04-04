@@ -20,20 +20,20 @@ int main(int argc, char *argv[])
     int blank_counter = 0;
     int column_counter = (-1);
 
-    // Gets arguments, if any, from argv
+    // Gets arguments from argv, if any
     for (i = 1; i < argc; ++i)
     {
-        // if (*(argv[i]) >= '0' && *(argv[i]) <= '9')
-        // {
-        //     full_tab_size = atoi(argv[++i]);
-        // }
-        if (strcmp(argv[i], "-") == 0)
+        if (strcmp(argv[i], "0") >= 0 && strcmp(argv[i], "9") <= 0)
         {
-            column_limit = atoi(argv[++i]);
+            full_tab_size = atoi(argv[i]);
         }
-        else if (strcmp(argv[i], "+") == 0)
+        if (argv[i][0] == '-')
         {
-            limited_tab_size = atoi(argv[++i]);
+            column_limit = (-1) * atoi(argv[i]);
+        }
+        else if (argv[i][0] == '+')
+        {
+            limited_tab_size = atoi(argv[i]);
         }
     }
 
