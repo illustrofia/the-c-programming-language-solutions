@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 {
     int c, tab;
 
-    tab = (argc > 1) ? tab = atoi(argv[1]) : TAB;
+    tab = (argc > 1) ? atoi(argv[1]) : TAB;
 
     while ((c = getchar()) != EOF)
     {
