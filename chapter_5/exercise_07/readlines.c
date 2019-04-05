@@ -18,7 +18,7 @@ int main(void)
     char lines[MAXLINES * MAXLEN];
     char *lineptr[MAXLINES];
 
-    if ((nlines = readlines(lineptr, lines, MAXLINES, MAXLEN)) <= MAXLINES)
+    if ((nlines = readlines(lineptr, lines, MAXLINES, MAXLEN)) >= 0)
     {
         qsort(lineptr, 0, nlines - 1);
         writelines(lineptr, nlines);
