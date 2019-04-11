@@ -11,7 +11,7 @@
 
 char *lineptr[MAXLINES];
 
-int readlines(char *lineptr[], int nlines);
+int readlines(char *lineptr[], int maxlines);
 void writelines(char *lineptr[], int nlines);
 
 int main(int argc, char const *argv[])
@@ -59,6 +59,7 @@ char *alloc(int n)
     if (allocbuf + ALLOCSIZE - allocp >= n)
     {
         allocp += n;
+        
         return allocp - n;
     }
     else
@@ -85,6 +86,7 @@ int readlines(char *lineptr[], int maxlines)
         {
             // Delete newline character
             line[len - 1] = '\0';
+
             strcpy(p, line);
 
             lineptr[nlines++] = p;
