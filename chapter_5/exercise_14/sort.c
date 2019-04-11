@@ -1,3 +1,4 @@
+// Program removes last character from read lines; needs fix
 // Add -r flag
 
 #include <stdio.h>
@@ -5,9 +6,12 @@
 #include <stdlib.h>
 
 #define MAXLINES 5000
+#define MAXLEN 1000
+#define ALLOCSIZE 10000
+
 char *lineptr[MAXLINES];
 
-int readlines(char *lineptr[], int nlines);
+int readlines(char *lineptr[], int maxlines);
 void writelines(char *lineptr[], int nlines);
 
 void quicksort(void *v[], int left, int right,
@@ -27,8 +31,16 @@ int main(int argc, char const *argv[])
 
     if ((nlines = readlines(lineptr, MAXLINES)) >= 0)
     {
-        quicksort((void **) lineptr, 0, nlines - 1,
-                  (int (*)(void *, void *))(numeric ? numcmp : strcmp));
+        if (numeric)
+        {
+            quicksort((void **) lineptr, 0, nlines - 1,
+                      (int (*)(void *, void *))(numcmp));
+        }
+        else
+        {
+            quicksort((void **) lineptr, 0, nlines - 1,
+                      (int (*)(void *, void *))(strcmp));
+        }
 
         writelines(lineptr, nlines);
 
@@ -100,4 +112,72 @@ void swap(void *v[], int i, int j)
     temp = v[i];
     v[i] = v[j];
     v[j] = temp;
+}
+
+static char allocbuf[ALLOCSIZE];
+static char *allocp = allocbuf;
+
+char *alloc(int n)
+{
+    if (allocbuf + ALLOCSIZE - allocp >= n)
+    {
+        allocp += n;
+        
+        return allocp - n;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+int getsline(char *s, int maxlen)
+{
+    int i = 0;
+
+    while ((*s = getchar()) != EOF && (*s != '\n') && ++i < maxlen)
+    {
+        s++;
+    }
+
+    *s = '\0';
+
+    return i;
+}
+
+// readlines: read input lines
+int readlines(char *lineptr[], int maxlines)
+{
+    int len, nlines;
+    char *p, line[MAXLEN];
+
+    nlines = 0;
+
+    while ((len = getsline(line, MAXLEN)) > 0)
+    {
+        if (nlines >= maxlines || (p = alloc(len)) == NULL)
+        {
+            return -1;
+        }
+        else
+        {
+            // Delete newline character
+            line[len - 1] = '\0';
+
+            strcpy(p, line);
+
+            lineptr[nlines++] = p;
+        }
+    }
+
+    return nlines;
+}
+
+// writelines: write output lines
+void writelines(char *lineptr[], int nlines)
+{
+    while (nlines-- > 0)
+    {
+        printf("%s\n", *lineptr++);
+    }
 }
