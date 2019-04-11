@@ -1,5 +1,5 @@
-// Program removes last character from read lines; needs fix
-// Add -r flag
+// Sort program with -r flag
+// Program deletes last character from read lines; needs fix
 
 #include <stdio.h>
 #include <string.h>
@@ -12,7 +12,7 @@
 char *lineptr[MAXLINES];
 
 int readlines(char *lineptr[], int maxlines);
-void writelines(char *lineptr[], int nlines);
+void writelines(char *lineptr[], int nlines, int reverse);
 
 void quicksort(void *v[], int left, int right,
            int (*comp)(void *, void *));
@@ -23,10 +23,22 @@ int main(int argc, char const *argv[])
 {
     int nlines;
     int numeric = 0;
+    int reverse = 0;
+    int i;
 
-    if (argc > 1 && strcmp(argv[1], "-n") == 0)
+    if (argc > 1)
     {
-        numeric = 1;
+        for (i = 1; i < argc; i++)
+        {
+            if (strcmp(argv[i], "-n") == 0)
+            {
+                numeric = 1;
+            }
+            else if (strcmp(argv[i], "-r") == 0)
+            {
+                reverse = 1;
+            }
+        }
     }
 
     if ((nlines = readlines(lineptr, MAXLINES)) >= 0)
@@ -42,7 +54,7 @@ int main(int argc, char const *argv[])
                       (int (*)(void *, void *))(strcmp));
         }
 
-        writelines(lineptr, nlines);
+        writelines(lineptr, nlines, reverse);
 
         return 0;
     }
@@ -174,10 +186,24 @@ int readlines(char *lineptr[], int maxlines)
 }
 
 // writelines: write output lines
-void writelines(char *lineptr[], int nlines)
+void writelines(char *lineptr[], int nlines, int reverse)
 {
-    while (nlines-- > 0)
+    int i = 0;
+
+    if (reverse)
     {
-        printf("%s\n", *lineptr++);
+        for (i = nlines; --i > 0; *lineptr++);
+
+        while (nlines-- > 0)
+        {
+            printf("%s\n", *lineptr--);
+        }
+    }
+    else
+    {
+        while (nlines-- > 0)
+        {
+            printf("%s\n", *lineptr++);
+        }
     }
 }
