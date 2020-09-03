@@ -4,7 +4,7 @@
 
 int main(void)
 {
-    printf("The expression's value is equal to %d", getchar() != EOF);
+    printf("The expression's value is equal to %d.\n", getchar() != EOF);
 }
 
 // Observations
