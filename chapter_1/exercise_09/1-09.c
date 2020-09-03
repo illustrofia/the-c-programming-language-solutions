@@ -4,17 +4,21 @@
 
 int main(void)
 {
+    // Variables for a character and the previous one
     int c, prev_c;
 
-    c = getchar();
+    // Prints first character of the input
+    // Assignment to prev_c for comparison to c in while loop below
+    putchar(prev_c = getchar());
+
     while ((c = getchar()) != EOF)
     {
-        // The character currently in c and the one in prev_c can't be both blanks
+        // If the current character and the previous one are not both blanks
         if (!(c == ' ' && prev_c == ' '))
         {
             putchar(c);
         }
-        
+
         prev_c = c;
     }
 }
