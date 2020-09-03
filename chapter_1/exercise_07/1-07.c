@@ -7,9 +7,9 @@ int main(void)
     int c;
 
     c = EOF;
-    printf("EOF = %d", c);
-}
 
+    printf("EOF = %d.\n", c);
+}
 
 // Observations
 
