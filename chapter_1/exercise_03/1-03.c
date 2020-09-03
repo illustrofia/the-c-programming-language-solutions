@@ -9,14 +9,15 @@ int main(void)
     float fahr, celsius;
     int lower, upper, step;
 
-    lower = 0;      // Lower temperature limit
-    upper = 300;    // Upper temperature limit
-    step = 20;      // Step size
+    lower = 0;   // Lower temperature limit
+    upper = 300; // Upper temperature limit
+    step = 20;   // Step size
 
     fahr = lower;
-    
+
     // Prints a header before the table
     printf("Fahrenheit \t Celsius\n\n");
+
     while (fahr <= upper)
     {
         celsius = (5.0 / 9.0) * (fahr - 32);
@@ -25,10 +26,9 @@ int main(void)
     }
 }
 
-
 // Observations
 
-// If an arithetic operator has integer operands,
+// If an arithmetic operator has integer operands,
 // an integer operation is performed. However,
 // if an arithetic operator has one floating-point
 // operand and one integer operand, the integer
