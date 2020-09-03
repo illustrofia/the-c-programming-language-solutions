@@ -32,11 +32,13 @@ int main(void)
 
 // When coding in C, the programmer
 // must be careful when comparing values,
-// to use the double equals sign. It is also
-// interesting that, when declaring a variable,
-// if we do not assign it a specific value,
-// its value will be the default (automatic)
-// one. We must also be careful to be specific
+// to use the double equals sign.
+
+// It is also interesting that, when declaring
+// a variable, if we do not assign it a specific
+// value, its value will be the default (automatic) one.
+
+// We must also be careful to be specific
 // when using functions, to provide all of the
 // arguments, or the output will not be the
 // correct one.
