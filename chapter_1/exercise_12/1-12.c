@@ -1,4 +1,4 @@
-// Counts lines, words, and characters in input
+// Prints input one word per line
 
 #include <stdio.h>
 
@@ -10,9 +10,10 @@ int main(void)
     int c, state;
 
     state = OUT;
+
     while ((c = getchar()) != EOF)
     {
-        if (c != ' ' && c != '\n' && c != '\t')
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
         {
             state = IN;
             putchar(c);
@@ -24,10 +25,3 @@ int main(void)
         }
     }
 }
-
-// Observations
-
-// To test the program, I would pass on
-// extremely long words, tabs, extremely long
-// groups of blanks and special characters, such as
-// {}, /, ;, etc.
