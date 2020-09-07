@@ -38,11 +38,5 @@ int main(void)
 
 // Observations
 
-// To test the program, I would pass on
-// extremely long words, tabs, extremely long
-// groups of blanks and special characters, such as
-// {}, /, ;, etc.
-
-// At the same time, I would pass on just an EOF character,
-// or a couple of newline characters to see if the program
-// 'thinks' logically.
+// Series of special characters, such as commas, points,
+// colons, etc., might be considered words.
