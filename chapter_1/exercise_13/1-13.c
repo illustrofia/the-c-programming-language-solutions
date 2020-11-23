@@ -1,4 +1,4 @@
-// Prints a vertical histogram of the word lengths in input
+// Prints a vertical histogram of the word lengths from input
 
 #include <stdio.h>
 
@@ -10,34 +10,36 @@
 
 int main(void)
 {
-    int lengths[LIMIT];
-    
+    int lengths[LIMIT]; // Stores lengths frequencies
+
     for (int i = 0; i < LIMIT; i++)
     {
         lengths[i] = 0;
     }
 
-    int letters = 0;    // Stores each word length
-    int state = OUT;    // Keeps track of whether we are inside or outside a word
-    int c;              // Gets characters from input
-    int max = 0;        // Stores the maximum word length frequency
+    int letters = 0; // Stores each word length
+    int state = OUT; // Keeps track of whether we are inside or outside a word
+    int c;           // Gets characters from input
+    int max = 0;     // Stores the maximum word length frequency
 
+    // Populates length frequencies array
     while ((c = getchar()) != EOF)
     {
         // If the input is a letter of the alphabet, we know we are inside a word
         if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
         {
             state = IN;
-            letters++;
 
+            letters++;
         }
-        else if (state == IN)
+        else if (state == IN) // OBS: Only if we were inside a word do we execute this part
         {
             state = OUT;
-            lengths[letters]++;
+
+            lengths[letters]++; // Increment the corresponding length frequency
 
             if (lengths[letters] > max)
-            { 
+            {
                 max = lengths[letters];
             }
 
@@ -46,7 +48,7 @@ int main(void)
     }
 
     // Histogram printing explained after end of main()
-    printf("\nHistogram of the word lengths:\n\n");
+    printf("\nWord lengths histogram:\n\n");
     for (int i = max; i > 0; i--)
     {
         for (int j = 0; j < LIMIT; j++)
@@ -84,26 +86,15 @@ int main(void)
             }
         }
     }
-    
+
     printf("\n");
 }
 
-
 // The for loop starts with i representing
-// the maximum word length frequency. 
+// the highest length frequency.
 // Only the most frequent word lengths will
 // print a symbol here. The others must print
-// blank spaces here, though, so they fill
-// the space for the symbols to fit the
-// corresponding word length. We only print
-// word lengths that have appeard at least
-// once
-
-
-// Observations
-
-// The most complicated part in this program
-// was actually the printing of the histogram.
-// Printing a table is not very easy as you need
-// to format it in such a way that is pleasing
-// to look at.
+// blank spaces to fill the space for the symbols
+// to fit the corresponding word length.
+// We only print word lengths that have appeard
+// at least once.
