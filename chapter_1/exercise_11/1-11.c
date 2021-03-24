@@ -1,27 +1,21 @@
-// Counts lines, words, and characters in input
-
 #include <stdio.h>
 
-#define IN 1
-#define OUT 0
+#define IN 1  // inside a word
+#define OUT 0 // outside a word
 
-int main(void)
+main()
 {
-    int c;           // Character input variable
-    int nl = 1;      // Line counter; initialized 1, because input is at least one line
-    int nw = 0;      // Word counter
-    int nc = 0;      // Character counter
-    int state = OUT; // Stores whether INside or OUTside a word; initialized OUTside of word
+    int c, nl, nw, nc, state;
 
+    state = OUT;
+    nl = nw = nc = 0;
     while ((c = getchar()) != EOF)
     {
-        nc++;
-
+        ++nc;
         if (c == '\n')
         {
-            nl++;
+            ++nl;
         }
-
         if (c == ' ' || c == '\n' || c == '\t')
         {
             state = OUT;
@@ -29,14 +23,11 @@ int main(void)
         else if (state == OUT)
         {
             state = IN;
-            nw++;
+            ++nw;
         }
     }
-
-    printf("\n%d lines, %d words, %d characters\n", nl, nw, nc);
+    printf("%d %d %d\n", nl, nw, nc);
 }
 
-// Observations
-
-// Series of special characters, such as commas, points,
-// colons, etc., might be considered words.
+// We can test the program by writing special characters, sequences of blanks,
+// tabs, or new lines.
