@@ -13,7 +13,7 @@ int main(void)
 
     while ((c = getchar()) != EOF)
     {
-        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+        if (c != ' ' && c != '\n' && c != '\t')
         {
             state = IN;
             putchar(c);
