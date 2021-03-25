@@ -25,18 +25,17 @@ int main(void)
     // Populates length frequencies array
     while ((c = getchar()) != EOF)
     {
-        // If the input is a letter of the alphabet, we know we are inside a word
         if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
         {
             state = IN;
 
             letters++;
         }
-        else if (state == IN) // OBS: Only if we were inside a word do we execute this part
+        else if (state == IN)
         {
             state = OUT;
 
-            lengths[letters]++; // Increment the corresponding length frequency
+            lengths[letters]++;
 
             if (lengths[letters] > max)
             {
