@@ -2,20 +2,20 @@
 
 #include <stdio.h>
 
-#define MAXLINE 1000        // Maximum input line size
+#define MAXLINE 1000 // Maximum input line size
 
 int getsline(char line[], int maxline);
 void copy(char from[], char to[]);
 
 int main(void)
 {
-    int len;                // Line length
-    char line[MAXLINE];     // Input line
-    
+    int len;            // Line length
+    char line[MAXLINE]; // Input line
+
     while ((len = getsline(line, MAXLINE)) > 0)
     {
-// Also, I should also write a version
-// for this program using character arrays
+        // Also, I should also write a version
+        // for this program using character arrays
         for (int i = len - 1; i >= 0; i--)
         {
             if (line[i] == ' ' || line[i] == '\t')
@@ -34,7 +34,6 @@ int main(void)
 
     return 0;
 }
-
 
 // Reads a line into s, return length
 int getsline(char s[], int lim)

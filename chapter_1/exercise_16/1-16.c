@@ -24,7 +24,7 @@ int main(void)
             copy(line, longest);
         }
 
-        printf("Size of string: %d\n", len - 1);
+        printf("Size of string: %d\n", len);
     }
 
     if (maxlen > 0)
