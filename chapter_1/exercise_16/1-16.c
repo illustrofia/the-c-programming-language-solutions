@@ -2,18 +2,18 @@
 
 #include <stdio.h>
 
-#define MAXLINE 1000        // Maximum input line size
+#define MAXLINE 1000 // Maximum input line size
 
 int getsline(char line[], int maxline);
 void copy(char from[], char to[]);
 
 int main(void)
 {
-    int len;                // Current line length
-    char line[MAXLINE];     // Current input line
+    int len;            // Current line length
+    char line[MAXLINE]; // Current input line
 
-    int maxlen;             // Maximum length seen so far
-    char longest[MAXLINE];  // Longest line saved here
+    int maxlen;            // Maximum length seen so far
+    char longest[MAXLINE]; // Longest line saved here
 
     maxlen = 0;
     while ((len = getsline(line, MAXLINE)) > 0)
@@ -23,6 +23,8 @@ int main(void)
             maxlen = len;
             copy(line, longest);
         }
+
+        printf("Size of string: %d\n", len - 1);
     }
 
     if (maxlen > 0)
@@ -32,7 +34,6 @@ int main(void)
 
     return 0;
 }
-
 
 // Reads a line into s, return length
 int getsline(char s[], int lim)
@@ -49,7 +50,7 @@ int getsline(char s[], int lim)
         s[i] = c;
         i++;
     }
-    
+
     s[i] = '\0';
     return i;
 }
