@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 
-#define TAB_LENGTH 4
+#define TAB_LENGTH 8
 
 int main(void)
 {
