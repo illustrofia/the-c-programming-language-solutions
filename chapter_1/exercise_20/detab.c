@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 
-#define TAB 4
+#define TAB_LENGTH 4
 
 int main(void)
 {
@@ -12,22 +12,16 @@ int main(void)
     {
         if (c == '\t')
         {
-            for (int i = 0; i < TAB; i++)
+            for (int i = 0; i < TAB_LENGTH; i++)
             {
                 putchar(' ');
             }
         }
-        else 
+        else
         {
             putchar(c);
         }
     }
-    
+
     return 0;
 }
-
-// Observations
-
-// I used a symbolic parameter for the
-// tab equivalent, since it does not
-// require any memory to store.
