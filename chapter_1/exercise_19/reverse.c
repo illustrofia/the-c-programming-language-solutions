@@ -2,17 +2,17 @@
 
 #include <stdio.h>
 
-#define MAXLINE 1000        // Maximum input line size
+#define MAXLINE 1000 // Maximum input line size
 
 int getsline(char line[], int maxline);
 void reverse(char line[], char reversed[], int length);
 
 int main(void)
 {
-    int len;                 // Line length
-    char line[MAXLINE];      // Input line
+    int len;            // Line length
+    char line[MAXLINE]; // Input line
 
-    char reversed[MAXLINE];  // Reversed line generated here
+    char reversed[MAXLINE]; // Reversed line generated here
 
     while ((len = getsline(line, MAXLINE)) > 0)
     {
@@ -22,7 +22,6 @@ int main(void)
 
     return 0;
 }
-
 
 // Reads a line into s, return length
 int getsline(char s[], int lim)
@@ -39,7 +38,7 @@ int getsline(char s[], int lim)
         s[i] = c;
         i++;
     }
-    
+
     s[i] = '\0';
     return i;
 }
@@ -54,7 +53,7 @@ void reverse(char line[], char reversed[], int length)
         reversed[i] = line[length];
         i++;
     }
-    
+
     reversed[i] = '\n';
     reversed[i + 1] = '\0';
 }

@@ -5,31 +5,19 @@
 #define MAXLINE 1000 // Maximum input line size
 
 int getsline(char line[], int maxline);
-void copy(char from[], char to[]);
+int remove_trailing_blanks(char line[], int length);
 
 int main(void)
 {
-    int len;            // Line length
     char line[MAXLINE]; // Input line
+    int len;            // Line length
+    int newline_ending; // For newline ending character
 
-    while ((len = getsline(line, MAXLINE)) > 0)
+    while ((len = getsline(line, MAXLINE) - 1) > 0)
     {
-        // Also, I should also write a version
-        // for this program using character arrays
-        for (int i = len - 1; i >= 0; i--)
-        {
-            if (line[i] == ' ' || line[i] == '\t')
-            {
-                for (int j = i; j < len; j++)
-                {
-                    line[j] = line[j + 1];
-                }
+        remove_trailing_blanks(line, len);
 
-                len--;
-            }
-        }
-
-        printf("%s", line);
+        printf("\n%s", line);
     }
 
     return 0;
@@ -53,4 +41,17 @@ int getsline(char s[], int lim)
 
     s[i] = '\0';
     return i;
+}
+
+int remove_trailing_blanks(char line[], int length)
+{
+    int i = length - 1;
+
+    while (line[i] == ' ' || line[i] == '\t' || line[i] == '\n')
+    {
+        i--;
+    }
+
+    line[i + 1] = '\n';
+    line[i + 2] = '\0';
 }
