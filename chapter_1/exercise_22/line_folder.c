@@ -1,30 +1,26 @@
-// Needs comments
-
 // Folds long input lines
 
 #include <stdio.h>
 
-#define MAXLINE 1000        // Maximum input line size
-#define MAXLENGTH 70        // Maximum line length
+#define MAXLINE 1000 // Maximum input line size
 
 int getsline(char line[], int limit);
 void copy(char from[], char to[]);
-void format(char line[], int length, int limit);
+void fold(char line[], int length, int max_line_length);
 
 int main(void)
 {
-    int length;             // Line length
-    char line[MAXLINE];     // Input line
+    char line[MAXLINE];
+    int length;
 
     while ((length = getsline(line, MAXLINE)) > 0)
     {
-        format(line, length, MAXLENGTH);
-        printf("\n%s", line);
+        fold(line, length, 80);
+        printf("%s", line);
     }
 
     return 0;
 }
-
 
 // Reads a line into s, return length
 int getsline(char s[], int limit)
@@ -46,34 +42,38 @@ int getsline(char s[], int limit)
     return i;
 }
 
-// Formats long lines
-void format(char line[], int length, int limit)
+void fold(char line[], int length, int max_line_length)
 {
-    int last_blank;
-    int j;
+    if (length - 2 < max_line_length) // Line fold is not necessary
+        return;
 
-    last_blank = 0;
-    j = limit - 1;
-    while (j > last_blank && j < length)
+    int i, j;
+    int folded; //Cheks if first search failed
+
+    for (i = max_line_length; i <= length - 2; i += max_line_length)
     {
-        if (line[j] == ' ' || line[j] == '\t')
+        folded = 0;
+        // Searches for whitespace character in descending order
+        for (j = i; j >= 0 && line[j] != '\n'; j--)
         {
-            last_blank = j;
-            line[last_blank] = '\n';
-            j += limit;
-            j++;
-        }
-        
-        j--;
-        if (j == last_blank)
-        {
-            for (int i = j + 1; i < length; i++)
+            if (line[j] == ' ' || line[i] == '\t')
             {
-                if (line[i] == ' ' || line[j] == 't')
+                line[j] = '\n';
+                i = j + 1; // New line starts at position j + 1, rifht after newline character
+                folded = 1;
+                break;
+            }
+        }
+
+        // If line was not folded, search the opposite order for whitespace
+        if (!folded)
+        {
+            for (j = i + 1; j++; j <= length - 2)
+            {
+                if (line[j] == ' ' || line[i] == '\t')
                 {
-                    last_blank = i;
-                    line[last_blank] = '\n';
-                    j = last_blank + limit;
+                    line[j] = '\n';
+                    i = j;
                     break;
                 }
             }
