@@ -7,7 +7,7 @@
 #define INQUOTE -1
 #define MAXLINE 1000        // Maximum input line size
 
-int getsline(char line[], int limit);
+int get_program(char line[], int limit);
 void copy(char from[], char to[]);
 
 // Needs comments. Needs formating on that long if condition (line 73, it has a humongous amount of columns)
@@ -22,7 +22,7 @@ int main(void)
     int comment_end;
     int quote_start;
     // int useless line;
-    
+
     while ((length = getsline(line, MAXLINE)) > 0)
     {
         // useless_line = 0;
@@ -109,7 +109,7 @@ int getsline(char s[], int limit)
         s[i] = c;
         i++;
     }
-    
+
     s[i] = '\0';
     return i;
 }
