@@ -42,7 +42,7 @@ void remove_comments(char str[], char str_no_com[])
     while (str[i] != '\0')
     {
         // If we're inside a quote, copy character
-        if (!in_quote && str[i] == '"')
+        if (!in_quote && str[i] == '"' && !block_com && !inline_com)
         {
             in_quote = TRUE;
             str_no_com[j++] = str[i++];
@@ -53,7 +53,7 @@ void remove_comments(char str[], char str_no_com[])
             str_no_com[j++] = str[i++];
         }
 
-        // If we're not inside quote, check if we're not inside a comment
+        // If "we're not inside quote, check if we're not inside a comment
         if (!in_quote)
         {
             if (!block_com && str[i] == '/' && str[i + 1] == '*' && !inline_com)
