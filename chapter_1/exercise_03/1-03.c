@@ -6,24 +6,24 @@
 
 int main(void)
 {
-    float fahr, celsius;
-    int lower, upper, step;
+  float fahr, celsius;
+  int lower, upper, step;
 
-    lower = 0;   // Lower temperature limit
-    upper = 300; // Upper temperature limit
-    step = 20;   // Step size
+  lower = 0;   // Lower temperature limit
+  upper = 300; // Upper temperature limit
+  step = 20;   // Step size
 
-    fahr = lower;
+  fahr = lower;
 
-    // Prints a header before the table
-    printf("Fahrenheit \t Celsius\n\n");
+  // Prints a header before the table
+  printf("Fahrenheit \t Celsius\n\n");
 
-    while (fahr <= upper)
-    {
-        celsius = (5.0 / 9.0) * (fahr - 32);
-        printf("%3.0f \t\t %6.1f\n", fahr, celsius);
-        fahr += step;
-    }
+  while (fahr <= upper)
+  {
+    celsius = (5.0 / 9.0) * (fahr - 32);
+    printf("%3.0f \t\t %6.1f\n", fahr, celsius);
+    fahr += step;
+  }
 }
 
 // Observations

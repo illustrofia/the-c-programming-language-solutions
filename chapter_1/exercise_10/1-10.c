@@ -6,29 +6,29 @@
 
 int main(void)
 {
-    int c;
+  int c;
 
-    while ((c = getchar()) != EOF)
+  while ((c = getchar()) != EOF)
+  {
+
+    if (c == '\b')
     {
-
-        if (c == '\b')
-        {
-            putchar('\\'); // Prints a backslash
-            putchar('b');
-        }
-        else if (c == '\t')
-        {
-            putchar('\\');
-            putchar('t');
-        }
-        else if (c == '\\')
-        {
-            putchar('\\');
-            putchar('\\');
-        }
-        else
-        {
-            putchar(c);
-        }
+      putchar('\\'); // Prints a backslash
+      putchar('b');
     }
+    else if (c == '\t')
+    {
+      putchar('\\');
+      putchar('t');
+    }
+    else if (c == '\\')
+    {
+      putchar('\\');
+      putchar('\\');
+    }
+    else
+    {
+      putchar(c);
+    }
+  }
 }

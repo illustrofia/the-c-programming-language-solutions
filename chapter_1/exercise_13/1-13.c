@@ -10,83 +10,83 @@
 
 int main(void)
 {
-    int lengths[LIMIT]; // Stores lengths frequencies
+  int lengths[LIMIT]; // Stores lengths frequencies
 
-    for (int i = 0; i < LIMIT; i++)
+  for (int i = 0; i < LIMIT; i++)
+  {
+    lengths[i] = 0;
+  }
+
+  int letters = 0; // Stores each word length
+  int state = OUT; // Keeps track of whether we are inside or outside a word
+  int c;           // Gets characters from input
+  int max = 0;     // Stores the maximum word length frequency
+
+  // Populates length frequencies array
+  while ((c = getchar()) != EOF)
+  {
+    if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
     {
-        lengths[i] = 0;
+      state = IN;
+
+      letters++;
     }
-
-    int letters = 0; // Stores each word length
-    int state = OUT; // Keeps track of whether we are inside or outside a word
-    int c;           // Gets characters from input
-    int max = 0;     // Stores the maximum word length frequency
-
-    // Populates length frequencies array
-    while ((c = getchar()) != EOF)
+    else if (state == IN)
     {
-        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
-        {
-            state = IN;
+      state = OUT;
 
-            letters++;
-        }
-        else if (state == IN)
-        {
-            state = OUT;
+      lengths[letters]++;
 
-            lengths[letters]++;
+      if (lengths[letters] > max)
+      {
+        max = lengths[letters];
+      }
 
-            if (lengths[letters] > max)
-            {
-                max = lengths[letters];
-            }
-
-            letters = 0;
-        }
+      letters = 0;
     }
+  }
 
-    // Histogram printing explained after end of main()
-    printf("\nWord lengths histogram:\n\n");
-    for (int i = max; i > 0; i--)
+  // Histogram printing explained after end of main()
+  printf("\nWord lengths histogram:\n\n");
+  for (int i = max; i > 0; i--)
+  {
+    for (int j = 0; j < LIMIT; j++)
     {
-        for (int j = 0; j < LIMIT; j++)
+      if (lengths[j])
+      {
+        if (lengths[j] >= i)
         {
-            if (lengths[j])
-            {
-                if (lengths[j] >= i)
-                {
-                    printf("####");
-                }
-                else
-                {
-                    printf("    ");
-                }
-
-                printf(" ");
-            }
+          printf("####");
+        }
+        else
+        {
+          printf("    ");
         }
 
-        printf("\n");
-    }
-
-    // Bottom row printing (word lengths)
-    for (int i = 0; i < LIMIT; i++)
-    {
-        if (lengths[i])
-        {
-            if (i < 10)
-            {
-                printf(" 0%i  ", i);
-            }
-            else
-            {
-                printf(" %i  ", i);
-            }
-        }
+        printf(" ");
+      }
     }
 
     printf("\n");
+  }
+
+  // Bottom row printing (word lengths)
+  for (int i = 0; i < LIMIT; i++)
+  {
+    if (lengths[i])
+    {
+      if (i < 10)
+      {
+        printf(" 0%i  ", i);
+      }
+      else
+      {
+        printf(" %i  ", i);
+      }
+    }
+  }
+
+  printf("\n");
 }
 
 // The for loop starts with i representing

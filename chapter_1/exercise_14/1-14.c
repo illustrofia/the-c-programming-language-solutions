@@ -6,90 +6,90 @@
 
 int main(void)
 {
-    int chars[LIMIT];
+  int chars[LIMIT];
 
-    for (int i = 0; i <= LIMIT; i++)
+  for (int i = 0; i <= LIMIT; i++)
+  {
+    chars[i] = 0;
+  }
+
+  int c;       // Gets characters from input
+  int max = 0; // Stores maximum frequency
+
+  while ((c = getchar()) != EOF)
+  {
+    chars[c]++;
+    if (chars[c] > max)
     {
-        chars[i] = 0;
+      max = chars[c];
     }
+  }
 
-    int c;       // Gets characters from input
-    int max = 0; // Stores maximum frequency
-
-    while ((c = getchar()) != EOF)
+  // Histogram printing explained after end of main()
+  printf("\nHistogram of the characters:\n\n");
+  for (int i = max; i > 0; i--)
+  {
+    for (int j = 0; j <= LIMIT; j++)
     {
-        chars[c]++;
-        if (chars[c] > max)
+      if (chars[j])
+      {
+        if (chars[j] >= i)
         {
-            max = chars[c];
+          printf(" ### ");
         }
-    }
-
-    // Histogram printing explained after end of main()
-    printf("\nHistogram of the characters:\n\n");
-    for (int i = max; i > 0; i--)
-    {
-        for (int j = 0; j <= LIMIT; j++)
+        else
         {
-            if (chars[j])
-            {
-                if (chars[j] >= i)
-                {
-                    printf(" ### ");
-                }
-                else
-                {
-                    printf("     ");
-                }
-            }
+          printf("     ");
         }
-
-        printf("\n");
-    }
-
-    // Prints bottom row of characters
-    for (int i = 0; i <= LIMIT; i++)
-    {
-        if (chars[i])
-        {
-            if (i == '\n')
-            {
-                printf("  \\n ");
-            }
-            else if (i == '\t')
-            {
-                printf("  \\t ");
-            }
-            else
-            {
-                printf("  %c  ", i);
-            }
-        }
+      }
     }
 
     printf("\n");
+  }
 
-    // Prints row of character frequencies
-    for (int i = 0; i <= LIMIT; i++)
+  // Prints bottom row of characters
+  for (int i = 0; i <= LIMIT; i++)
+  {
+    if (chars[i])
     {
-        if (chars[i])
-        {
-            if (chars[i] < 10)
-            {
-                printf(" 00%i ", chars[i]);
-            }
-            else if (chars[i] < 100)
-            {
-                printf(" 0%i ", chars[i]);
-            }
-            else
-            {
-                printf(" %i ", chars[i]);
-            }
-        }
+      if (i == '\n')
+      {
+        printf("  \\n ");
+      }
+      else if (i == '\t')
+      {
+        printf("  \\t ");
+      }
+      else
+      {
+        printf("  %c  ", i);
+      }
     }
+  }
 
-    printf("\n");
+  printf("\n");
+
+  // Prints row of character frequencies
+  for (int i = 0; i <= LIMIT; i++)
+  {
+    if (chars[i])
+    {
+      if (chars[i] < 10)
+      {
+        printf(" 00%i ", chars[i]);
+      }
+      else if (chars[i] < 100)
+      {
+        printf(" 0%i ", chars[i]);
+      }
+      else
+      {
+        printf(" %i ", chars[i]);
+      }
+    }
+  }
+
+  printf("\n");
 }
 
 // The for loop starts with i representing

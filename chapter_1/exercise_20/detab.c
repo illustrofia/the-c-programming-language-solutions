@@ -6,22 +6,22 @@
 
 int main(void)
 {
-    int c;
+  int c;
 
-    while ((c = getchar()) != EOF)
+  while ((c = getchar()) != EOF)
+  {
+    if (c == '\t')
     {
-        if (c == '\t')
-        {
-            for (int i = 0; i < TAB_LENGTH; i++)
-            {
-                putchar(' ');
-            }
-        }
-        else
-        {
-            putchar(c);
-        }
+      for (int i = 0; i < TAB_LENGTH; i++)
+      {
+        putchar(' ');
+      }
     }
+    else
+    {
+      putchar(c);
+    }
+  }
 
-    return 0;
+  return 0;
 }

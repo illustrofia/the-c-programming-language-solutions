@@ -7,21 +7,21 @@
 
 int main(void)
 {
-    int c, state;
+  int c, state;
 
-    state = OUT;
+  state = OUT;
 
-    while ((c = getchar()) != EOF)
+  while ((c = getchar()) != EOF)
+  {
+    if (c != ' ' && c != '\n' && c != '\t')
     {
-        if (c != ' ' && c != '\n' && c != '\t')
-        {
-            state = IN;
-            putchar(c);
-        }
-        else if (state == IN)
-        {
-            state = OUT;
-            putchar('\n');
-        }
+      state = IN;
+      putchar(c);
     }
+    else if (state == IN)
+    {
+      state = OUT;
+      putchar('\n');
+    }
+  }
 }

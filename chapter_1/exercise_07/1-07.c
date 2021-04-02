@@ -4,11 +4,11 @@
 
 int main(void)
 {
-    int c;
+  int c;
 
-    c = EOF;
+  c = EOF;
 
-    printf("EOF = %d.\n", c);
+  printf("EOF = %d.\n", c);
 }
 
 // Observations

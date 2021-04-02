@@ -5,27 +5,27 @@
 
 int main(void)
 {
-    int c;
-    int blanks = 0, tabs = 0, newlines = 0;
+  int c;
+  int blanks = 0, tabs = 0, newlines = 0;
 
-    // Counts the blanks, tabs and newlines
-    while ((c = getchar()) != EOF)
+  // Counts the blanks, tabs and newlines
+  while ((c = getchar()) != EOF)
+  {
+    if (c == ' ')
     {
-        if (c == ' ')
-        {
-            blanks++;
-        }
-        else if (c == '\t')
-        {
-            tabs++;
-        }
-        else if (c == '\n')
-        {
-            newlines++;
-        }
+      blanks++;
     }
+    else if (c == '\t')
+    {
+      tabs++;
+    }
+    else if (c == '\n')
+    {
+      newlines++;
+    }
+  }
 
-    printf("There are %d blanks, %d tabs, and %d newlines.\n", blanks, tabs, newlines);
+  printf("There are %d blanks, %d tabs, and %d newlines.\n", blanks, tabs, newlines);
 }
 
 // Observations

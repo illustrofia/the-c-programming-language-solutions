@@ -7,40 +7,40 @@
 
 int main(void)
 {
-    int c;
-    int spaces;
-    int line_position;
+  int c;
+  int spaces;
+  int line_position;
 
-    line_position = 0;
-    spaces = 0;
-    while ((c = getchar()) != EOF)
+  line_position = 0;
+  spaces = 0;
+  while ((c = getchar()) != EOF)
+  {
+    line_position++;
+
+    if (c == ' ')
     {
-        line_position++;
+      spaces++;
 
-        if (c == ' ')
-        {
-            spaces++;
-
-            if (line_position % TAB == 0 && spaces > 0)
-            {
-                putchar('\t');
-                spaces = 0;
-            }
-        }
-        else
-        {
-            while (spaces)
-            {
-                putchar(' ');
-                spaces--;
-            }
-
-            putchar(c);
-        }
-
-        if (c == '\n')
-        {
-            line_position = 0;
-        }
+      if (line_position % TAB == 0 && spaces > 0)
+      {
+        putchar('\t');
+        spaces = 0;
+      }
     }
+    else
+    {
+      while (spaces)
+      {
+        putchar(' ');
+        spaces--;
+      }
+
+      putchar(c);
+    }
+
+    if (c == '\n')
+    {
+      line_position = 0;
+    }
+  }
 }

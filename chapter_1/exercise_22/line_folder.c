@@ -9,73 +9,73 @@ void fold(char line[], char folded_line[], int max_line_length);
 
 int main(void)
 {
-    char line[MAXLINE];
-    char folded_line[MAXLINE * 2];
+  char line[MAXLINE];
+  char folded_line[MAXLINE * 2];
 
-    while ((getsline(line, MAXLINE)) > 0)
-    {
-        fold(line, folded_line, 80);
-        printf("%s", folded_line);
-    }
+  while ((getsline(line, MAXLINE)) > 0)
+  {
+    fold(line, folded_line, 80);
+    printf("%s", folded_line);
+  }
 
-    return 0;
+  return 0;
 }
 
 // Reads a line into s, return length
 int getsline(char s[], int limit)
 {
-    int c, i;
+  int c, i;
 
-    for (i = 0; i < limit - 1 && (c = getchar()) != EOF && c != '\n'; i++)
-    {
-        s[i] = c;
-    }
+  for (i = 0; i < limit - 1 && (c = getchar()) != EOF && c != '\n'; i++)
+  {
+    s[i] = c;
+  }
 
-    if (c == '\n')
-    {
-        s[i] = c;
-        i++;
-    }
+  if (c == '\n')
+  {
+    s[i] = c;
+    i++;
+  }
 
-    s[i] = '\0';
-    return i;
+  s[i] = '\0';
+  return i;
 }
 
 // Folds line[] into folded_line[]. Inserts '-' characters if line is too long
 void fold(char line[], char folded_line[], int max_line_length)
 {
-    int i, j, m;
-    int colon_counter = 0;
+  int i, j, m;
+  int colon_counter = 0;
 
-    for (i = 0, j = 0; line[i] != '\0'; i++, j++)
+  for (i = 0, j = 0; line[i] != '\0'; i++, j++)
+  {
+    folded_line[j] = line[i];
+    colon_counter++;
+
+    if (colon_counter == max_line_length)
     {
-        folded_line[j] = line[i];
-        colon_counter++;
-
-        if (colon_counter == max_line_length)
+      for (m = j; m >= j - 10; m--)
+      {
+        if (folded_line[m] == ' ' || folded_line[m] == '\t')
         {
-            for (m = j; m >= j - 10; m--)
-            {
-                if (folded_line[m] == ' ' || folded_line[m] == '\t')
-                {
-                    folded_line[m] = '\n';
-                    colon_counter = 0;
-                    i = j = m;
+          folded_line[m] = '\n';
+          colon_counter = 0;
+          i = j = m;
 
-                    break;
-                }
-            }
-
-            if (colon_counter)
-            {
-                folded_line[j++] = '-';
-                folded_line[j] = '\n';
-                i = j - 1;
-
-                colon_counter = 0;
-            }
+          break;
         }
-    }
+      }
 
-    folded_line[j] = '\0';
+      if (colon_counter)
+      {
+        folded_line[j++] = '-';
+        folded_line[j] = '\n';
+        i = j - 1;
+
+        colon_counter = 0;
+      }
+    }
+  }
+
+  folded_line[j] = '\0';
 }
