@@ -2,8 +2,8 @@
 
 #include <stdio.h>
 
-#define TRUE 1
-#define FALSE 0
+#define IN 1
+#define OUT 0
 #define MAXLINE 10000
 
 void get_program(char program[], int limit);
@@ -34,11 +34,11 @@ void get_program(char program[], int limit)
 // Checks a C program for rudimentary syntax errors
 void error_check(char program[])
 {
-    int single_quotes = FALSE;
-    int double_quotes = FALSE;
+    int single_quotes = OUT;
+    int double_quotes = OUT;
 
-    int line_comment = FALSE;
-    int block_comment = FALSE;
+    int line_comment = OUT;
+    int block_comment = OUT;
 
     int parantheses = 0;
     int brackets = 0;
@@ -47,113 +47,85 @@ void error_check(char program[])
     int i = 0;
     while (program[i] != '\0')
     {
-
-        /**
-         *
-         * COMMENTS
-         *
-         **/
-
-        // start line comment
-        if (program[i] == '/' && program[i + 1] == '/' && !block_comment && !single_quotes && !double_quotes)
+        // Check for quotes
+        if (!line_comment && !block_comment)
         {
-            line_comment = TRUE;
-        }
+            if (program[i] == '\'' && !single_quotes && !double_quotes)
+            {
+                single_quotes = IN;
+            }
+            else if (single_quotes && program[i] == '\'' && (program[i - 1] != '\\' || program[i - 2] == '\\'))
+            {
+                single_quotes = OUT;
+            }
 
-        // end line comment
-        if (program[i] == '\n')
-        {
-            line_comment = FALSE;
-        }
-
-        // start block comment
-        if (program[i] == '/' && program[i + 1] == '*' && !line_comment && !single_quotes && !double_quotes)
-        {
-            block_comment = TRUE;
+            if (program[i] == '"' && !single_quotes && !double_quotes)
+            {
+                double_quotes = IN;
+            }
+            else if (double_quotes && program[i] == '"' && (program[i - 1] != '\\' || program[i - 2] == '\\'))
+            {
+                double_quotes = OUT;
+            }
         }
 
-        // end block comment
-        if (block_comment && program[i] == '*' && program[i + 1] == '/')
+        // Check for comments
+        if (!single_quotes && !double_quotes)
         {
-            block_comment = FALSE;
+            if (program[i] == '/' && program[i + 1] == '/' && !block_comment)
+            {
+                line_comment = IN;
+            }
+            else if (line_comment && program[i] == '\n')
+            {
+                line_comment = OUT;
+            }
+
+            if (program[i] == '/' && program[i + 1] == '*' && !line_comment)
+            {
+                block_comment = IN;
+            }
+            else if (block_comment && program[i] == '*' && program[i + 1] == '/')
+            {
+                block_comment = OUT;
+            }
         }
 
-        /**
-         *
-         * QUOTES
-         *
-         **/
+        // Check for parantheses
+        if (!line_comment && !block_comment && !single_quotes && !double_quotes)
+        {
+            if (program[i] == '(')
+            {
+                parantheses++;
+            }
+            else if (program[i] == ')')
+            {
+                parantheses--;
+            }
 
-        // start single quotes
-        if (!single_quotes && program[i] == '\'' && program[i] != '\\' && !line_comment && !block_comment && !double_quotes)
-        {
-            single_quotes++;
-        }
-        // end single quotes
-        if (single_quotes && program[i] == '\'' && program[i - 1] != '\\' && !line_comment && !block_comment)
-        {
-            single_quotes--;
-        }
+            if (program[i] == '[')
+            {
+                brackets++;
+            }
+            else if (program[i] == ']')
+            {
+                brackets--;
+            }
 
-        // start double quotes
-        if (!double_quotes && program[i] == '"' && !line_comment && !block_comment && !single_quotes)
-        {
-            double_quotes++;
-        }
-        // end double quotes
-        if (double_quotes && program[i] == '"' && program[i - 1] != '\\' && !line_comment && !block_comment)
-        {
-            double_quotes--;
-        }
-
-        /**
-         *
-         * PARANTHESES
-         *
-         **/
-
-        // increment parantheses
-        if (program[i] == '(' && !line_comment && !block_comment && !single_quotes && !double_quotes)
-        {
-            parantheses++;
-        }
-        // decrement parantheses
-        if (program[i] == ')' && !line_comment && !block_comment && !single_quotes && !double_quotes)
-        {
-            parantheses--;
-        }
-
-        // increment brackets
-        if (program[i] == '[' && !line_comment && !block_comment && !single_quotes && !double_quotes)
-        {
-            brackets++;
-        }
-        // decrement brackets
-        if (program[i] == ']' && !line_comment && !block_comment && !single_quotes && !double_quotes)
-        {
-            brackets--;
-        }
-
-        // increment braces
-        if (program[i] == '{' && !line_comment && !block_comment && !single_quotes && !double_quotes)
-        {
-            braces++;
-        }
-        // decrement braces
-        if (program[i] == '}' && !line_comment && !block_comment && !single_quotes && !double_quotes)
-        {
-            braces--;
+            if (program[i] == '{')
+            {
+                braces++;
+            }
+            else if (program[i] == '}')
+            {
+                braces--;
+            }
         }
 
         i++;
     }
 
-    /**
-     *
-     * Check for errors
-     *
-     **/
-
+    // Print errors
     if (single_quotes)
     {
         printf("Error: Unbalanced single quotes.\n");
