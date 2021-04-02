@@ -2,9 +2,10 @@
 
 #include <stdio.h>
 
-#define IN 1
-#define OUT 0
 #define MAXLINE 10000
+
+#define TRUE (1 == 1)
+#define FALSE !TRUE
 
 void get_program(char program[], int limit);
 void error_check(char program[]);
@@ -34,11 +35,11 @@ void get_program(char program[], int limit)
 // Checks a C program for rudimentary syntax errors
 void error_check(char program[])
 {
-    int single_quotes = OUT;
-    int double_quotes = OUT;
+    int single_quotes = FALSE;
+    int double_quotes = FALSE;
 
-    int line_comment = OUT;
-    int block_comment = OUT;
+    int line_comment = FALSE;
+    int block_comment = FALSE;
 
     int parantheses = 0;
     int brackets = 0;
@@ -52,20 +53,20 @@ void error_check(char program[])
         {
             if (program[i] == '\'' && !single_quotes && !double_quotes)
             {
-                single_quotes = IN;
+                single_quotes = TRUE;
             }
             else if (single_quotes && program[i] == '\'' && (program[i - 1] != '\\' || program[i - 2] == '\\'))
             {
-                single_quotes = OUT;
+                single_quotes = FALSE;
             }
 
             if (program[i] == '"' && !single_quotes && !double_quotes)
             {
-                double_quotes = IN;
+                double_quotes = TRUE;
             }
             else if (double_quotes && program[i] == '"' && (program[i - 1] != '\\' || program[i - 2] == '\\'))
             {
-                double_quotes = OUT;
+                double_quotes = FALSE;
             }
         }
 
@@ -74,20 +75,20 @@ void error_check(char program[])
         {
             if (program[i] == '/' && program[i + 1] == '/' && !block_comment)
             {
-                line_comment = IN;
+                line_comment = TRUE;
             }
             else if (line_comment && program[i] == '\n')
             {
-                line_comment = OUT;
+                line_comment = FALSE;
             }
 
             if (program[i] == '/' && program[i + 1] == '*' && !line_comment)
             {
-                block_comment = IN;
+                block_comment = TRUE;
             }
             else if (block_comment && program[i] == '*' && program[i + 1] == '/')
             {
-                block_comment = OUT;
+                block_comment = FALSE;
             }
         }
 

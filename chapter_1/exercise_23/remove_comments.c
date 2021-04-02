@@ -1,10 +1,10 @@
 // Removes comments from a C program
 
 #include <stdio.h>
-
-#define TRUE 1
-#define FALSE 0
 #define MAXLINE 10000
+
+#define TRUE (1 == 1)
+#define FALSE !TRUE
 
 void get_program(char line[], int limit);
 void remove_comments(char str[], char str_no_com[]);
