@@ -4,6 +4,9 @@
 
 #define MAXLINE 1000 // Maximum input line size
 
+#define TRUE (1 == 1)
+#define FALSE !TRUE
+
 int getsline(char line[], int limit);
 void fold(char line[], char folded_line[], int max_line_length);
 
@@ -45,34 +48,40 @@ int getsline(char s[], int limit)
 void fold(char line[], char folded_line[], int max_line_length)
 {
   int i, j, m;
-  int colon_counter = 0;
+  int colon = 0;
+  int split = FALSE;
 
   for (i = 0, j = 0; line[i] != '\0'; i++, j++)
   {
     folded_line[j] = line[i];
-    colon_counter++;
 
-    if (colon_counter == max_line_length)
+    if (folded_line[j] == '\n')
     {
-      for (m = j; m >= j - 10; m--)
+      colon = 0;
+    }
+
+    colon++;
+
+    if (colon == max_line_length)
+    {
+      split = TRUE;
+      for (m = j; m >= j - 10 && split; m--)
       {
         if (folded_line[m] == ' ' || folded_line[m] == '\t')
         {
           folded_line[m] = '\n';
-          colon_counter = 0;
-          i = j = m;
+          colon = j - m;
 
-          break;
+          split = FALSE;
         }
       }
 
-      if (colon_counter)
+      if (split)
       {
         folded_line[j++] = '-';
         folded_line[j] = '\n';
-        i = j - 1;
 
-        colon_counter = 0;
+        colon = 0;
       }
     }
   }
