@@ -48,8 +48,9 @@ int getsline(char s[], int limit)
 void fold(char line[], char folded_line[], int max_line_length)
 {
   int i, j, m;
-  int colon = 0;
+  int column = 0;
   int split = FALSE;
+  int offset = 10;
 
   for (i = 0, j = 0; line[i] != '\0'; i++, j++)
   {
@@ -57,20 +58,20 @@ void fold(char line[], char folded_line[], int max_line_length)
 
     if (folded_line[j] == '\n')
     {
-      colon = 0;
+      column = 0;
     }
 
-    colon++;
+    column++;
 
-    if (colon == max_line_length)
+    if (column == max_line_length)
     {
       split = TRUE;
-      for (m = j; m >= j - 10 && split; m--)
+      for (m = j; m >= j - offset && split; m--)
       {
         if (folded_line[m] == ' ' || folded_line[m] == '\t')
         {
           folded_line[m] = '\n';
-          colon = j - m;
+          column = j - m;
 
           split = FALSE;
         }
@@ -81,7 +82,7 @@ void fold(char line[], char folded_line[], int max_line_length)
         folded_line[j++] = '-';
         folded_line[j] = '\n';
 
-        colon = 0;
+        column = 0;
       }
     }
   }
