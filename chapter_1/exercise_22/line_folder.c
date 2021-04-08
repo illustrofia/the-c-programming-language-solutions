@@ -7,6 +7,9 @@
 #define TRUE (1 == 1)
 #define FALSE !TRUE
 
+#define OFFSET 10
+#define BREAKING_POINT 80
+
 int getsline(char line[], int limit);
 void fold(char line[], char folded_line[], int max_line_length);
 
@@ -17,7 +20,7 @@ int main(void)
 
   while ((getsline(line, MAXLINE)) > 0)
   {
-    fold(line, folded_line, 80);
+    fold(line, folded_line, BREAKING_POINT);
     printf("%s", folded_line);
   }
 
@@ -50,9 +53,9 @@ void fold(char line[], char folded_line[], int max_line_length)
   int i, j, m;
   int column = 0;
   int split = FALSE;
-  int offset = 10;
+  int last_blank = 0;
 
-  for (i = 0, j = 0; line[i] != '\0'; i++, j++)
+  for (i = 0, j = 0; line[i] != '\0'; ++i, ++j)
   {
     folded_line[j] = line[i];
 
@@ -63,27 +66,33 @@ void fold(char line[], char folded_line[], int max_line_length)
 
     column++;
 
-    if (column == max_line_length)
+    if (column == max_line_length - OFFSET)
     {
       split = TRUE;
-      for (m = j; m >= j - offset && split; m--)
+    }
+
+    if (split && (folded_line[j] == ' ' || folded_line[j] == '\t'))
+    {
+      last_blank = j;
+    }
+
+    if (column == max_line_length)
+    {
+      if (last_blank)
       {
-        if (folded_line[m] == ' ' || folded_line[m] == '\t')
-        {
-          folded_line[m] = '\n';
-          column = j - m;
-
-          split = FALSE;
-        }
+        folded_line[last_blank] = '\n';
+        column = j - last_blank;
+        last_blank = 0;
       }
-
-      if (split)
+      else
       {
         folded_line[j++] = '-';
         folded_line[j] = '\n';
 
         column = 0;
       }
+
+      split = FALSE;
     }
   }
 
