@@ -1,12 +1,12 @@
 while (i < lim - 1)
 {
-    if (c = getchar() != '\n')
+  if (c = getchar() != '\n')
+  {
+    if (c != EOF)
     {
-        if (c != EOF)
-        {
-            s[i] = c;
-        }
+      s[i] = c;
     }
+  }
 
-    i++;
+  i++;
 }
