@@ -1,26 +1,34 @@
-// Birth of setbits()
-
 #include <stdio.h>
 
 int setbits(int x, int p, int n, int y);
 
 int main(void)
 {
-    int x = 85;
-    int y = 12;
+  int x = 85;
+  int y = 12;
+  int p = 3;
+  int n = 2;
 
-    printf("%i\n", setbits(x, 3, 2, y));
+  printf("%i\n", setbits(x, p, n, y));
 
-    return 0;
+  return 0;
 }
-
 
 // Returns x with the n bits that begin at
 // position p set to the rightmost n bits of y
 int setbits(int x, int p, int n, int y)
 {
-    int rightmost_n_bits_of_y_in_position_p = (~(~0 << n) & y) << (p + 1 - n);
-    int x_with_n_0s_in_position_p = ~(~(~0 << n) << (p + 1 - n)) & x;
 
-    return rightmost_n_bits_of_y_in_position_p | x_with_n_0s_in_position_p;
+  // Example with p = 3, n = 2
+  // Creates: 1111 0011
+  int x_mask = ~(~(~0 << n) << p + 1 - n);
+
+  // Creates xxxx 00xx
+  int scooped_x = x & x_mask;
+
+  // Creates 0000 yy00
+  int y_bits = (~(~0 << n) & y) << (p + 1 - n);
+
+  // Returns xxxx yyxx
+  return scooped_x | y_bits;
 }
