@@ -20,15 +20,12 @@ int setbits(int x, int p, int n, int y)
 {
 
   // Example with p = 3, n = 2
-  // Creates: 1111 0011
-  int x_mask = ~(~(~0 << n) << p + 1 - n);
-
-  // Creates xxxx 00xx
-  int scooped_x = x & x_mask;
+  // Creates: xxxx 00xx
+  int scooped_x = ~(~(~0 << n) << p + 1 - n) & x;
 
   // Creates 0000 yy00
   int y_bits = (~(~0 << n) & y) << (p + 1 - n);
 
-  // Returns xxxx yyxx
+  // xxxx 00xx | 0000 yy00 == xxxx yyxx
   return scooped_x | y_bits;
 }
