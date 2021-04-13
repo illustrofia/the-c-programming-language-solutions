@@ -1,14 +1,26 @@
 #include <stdio.h>
 
+#define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c\n"
+#define BYTE_TO_BINARY(byte)   \
+  (byte & 128 ? '1' : '0'),    \
+      (byte & 64 ? '1' : '0'), \
+      (byte & 32 ? '1' : '0'), \
+      (byte & 16 ? '1' : '0'), \
+      (byte & 8 ? '1' : '0'),  \
+      (byte & 4 ? '1' : '0'),  \
+      (byte & 2 ? '1' : '0'),  \
+      (byte & 1 ? '1' : '0')
+
 int invert(int x, int p, int n);
 
 int main(void)
 {
-  int x = 85;
+  int x = 0b01010101;
   int p = 3;
   int n = 2;
 
-  printf("%i\n", invert(x, p, n));
+  printf(BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(x));
+  printf(BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(invert(x, p, n)));
 
   return 0;
 }

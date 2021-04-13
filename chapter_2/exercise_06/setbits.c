@@ -1,15 +1,28 @@
 #include <stdio.h>
 
+#define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c\n"
+#define BYTE_TO_BINARY(byte)   \
+  (byte & 128 ? '1' : '0'),    \
+      (byte & 64 ? '1' : '0'), \
+      (byte & 32 ? '1' : '0'), \
+      (byte & 16 ? '1' : '0'), \
+      (byte & 8 ? '1' : '0'),  \
+      (byte & 4 ? '1' : '0'),  \
+      (byte & 2 ? '1' : '0'),  \
+      (byte & 1 ? '1' : '0')
+
 int setbits(int x, int p, int n, int y);
 
 int main(void)
 {
-  int x = 85;
-  int y = 12;
+  int x = 0b01010101;
+  int y = 0b1010;
+
   int p = 3;
   int n = 2;
 
-  printf("%i\n", setbits(x, p, n, y));
+  printf(BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(x));
+  printf(BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(setbits(x, p, n, y)));
 
   return 0;
 }
