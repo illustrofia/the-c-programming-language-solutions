@@ -1,35 +1,43 @@
-
 #include <stdio.h>
+#include <math.h>
 
-#define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c\n"
-#define BYTE_TO_BINARY(byte)   \
-  (byte & 128 ? '1' : '0'),    \
-      (byte & 64 ? '1' : '0'), \
-      (byte & 32 ? '1' : '0'), \
-      (byte & 16 ? '1' : '0'), \
-      (byte & 8 ? '1' : '0'),  \
-      (byte & 4 ? '1' : '0'),  \
-      (byte & 2 ? '1' : '0'),  \
-      (byte & 1 ? '1' : '0')
-
-int rightrot(int x, int n);
-int intlength();
+void printbin(unsigned int x);
+unsigned int rightrot(int x, int n);
 
 int main(void)
 {
-  int x = 0b01010101;
+  unsigned int x = 0b11011101;
 
-  printf(BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(x));
-  printf(BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(rightrot(x, 3)));
+  printbin(x);
+  printbin(rightrot(x, 3));
 
   return 0;
 }
 
-// Returns value of integer x rotated to the right by n bit positions
-int rightrot(int x, int n)
+void printbin(unsigned int x)
 {
-  int mask_1 = (~(~0 << n) & x) << (sizeof(x) * 8 - 1 - n);
-  int mask_2 = (~0 & x) >> n;
+  int n = sizeof(unsigned int);
 
+  printf("0b");
+
+  int i;
+  for (i = n * 8 - 1; i >= 0; i--)
+  {
+    (x & (unsigned int)pow(2, i)) ? putchar('1') : putchar('0');
+  }
+
+  putchar('\n');
+}
+
+// Returns value of integer x rotated to the right by n bit positions
+unsigned int rightrot(int x, int n)
+{
+  // Moves the n rightmost bits of x to the beginning
+  unsigned int mask_1 = (~(~0 << n) & x) << (sizeof(x) * 8 - n);
+
+  // Copies x without the n rightmost bits
+  unsigned int mask_2 = (~0 & x) >> n;
+
+  // Joins the two masks
   return mask_1 | mask_2;
 }
