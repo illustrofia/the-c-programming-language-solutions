@@ -1,5 +1,3 @@
-// Modified version of itoa()
-
 #include <stdio.h>
 
 #define MAXLEN 100
@@ -8,59 +6,64 @@ void itoa(int n, char s[]);
 
 int main(void)
 {
-    char s[MAXLEN];
-    int n = -2147483648;
-    
-    itoa(n, s);
+  char s[MAXLEN];
+  int n = -2147483648; // largest negative number
 
-    printf("%s\n", s);
+  itoa(n, s);
+
+  printf("%s\n", s);
 }
 
 void itoa(int n, char s[])
 {
-    int i, sign;
+  int i, sign;
 
-    i = 0;
-    sign = n;
+  i = 0;
+  sign = n;
 
-    if (n < 0)
+  if (n < 0)
+  {
+    do
     {
-        do
-        {
-            s[i++] = -(n % 10) + '0';
-        }
-        while ((n /= 10) != 0);
-    }
-    else 
+      s[i++] = -(n % 10) + '0';
+    } while ((n /= 10) != 0);
+  }
+  else
+  {
+    do
     {
-        do
-        {
-            s[i++] = n % 10 + '0';
-        }
-        while ((n /= 10) > 0);
-    }
+      s[i++] = n % 10 + '0';
+    } while ((n /= 10) != 0);
+  }
 
-    if (sign < 0)
-    {
-        s[i++] = '-';
-    }
+  if (sign < 0)
+  {
+    s[i++] = '-';
+  }
 
-    s[i--] = '\0';
+  s[i--] = '\0';
 
-    int aux;
-    for (int j = 0; j < i; i--, j++)
-    {
-        aux = s[i];
-        s[i] = s[j];
-        s[j] = aux;
-    }
+  int aux;
+  for (int j = 0; j < i; i--, j++)
+  {
+    aux = s[i];
+    s[i] = s[j];
+    s[j] = aux;
+  }
 }
 
-// Observation
-
-// The smallest possible number in a two's complementary number representation,
-// when multiplied with (-1), will become with 1 unit greater than the greatest
-// number. We cannot store that value using the same amount of bits, because
-// the sign bit will overflow. To solve this, we do not multiply with (-1), but
-// instead leave the number as is, and provide different conversions depending
-// on the polarity of the number.
+/**
+ * Note:
+ * In a two's complement number representation, the negative numbers
+ * are represented this way: first bit represents the sign. If it is
+ * 1, it means the number is negative. All of the following bits are
+ * actually positive values added to the negative number.
+ *
+ * Example:
+ * 1000 0000 represents -1111 1111.
+ * 1000 0001 represents -1111 1111 + 0000 0001 = -1111 1110
+ *
+ * So if we multiply 1000...0000 (the largest negative number) with -1,
+ * the value should be 1111...1111, so the sign bit is overflown and
+ * the number becomes -1.
+**/
