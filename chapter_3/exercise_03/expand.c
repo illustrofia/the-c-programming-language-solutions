@@ -76,15 +76,3 @@ void expand(char s1[], char s2[])
 
   s2[j] = '\0';
 }
-
-/**
- * for each character of the line
- * if character is equal to '-'
- * if character before is smaller than character after
- *    if characters before and after are letters
- *      for j = character before; j <= character after; j++
- *        print character to s2
- *    else if character before and after are numbers
- *      for j = character before; j <= character after; j++
- *        print character to s2
-**/
