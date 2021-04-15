@@ -3,6 +3,7 @@
 #define MAXLEN 100
 
 void itoa(int n, char s[]);
+void reverse(char s[]);
 
 int main(void)
 {
@@ -43,8 +44,14 @@ void itoa(int n, char s[])
 
   s[i--] = '\0';
 
-  int aux;
-  for (int j = 0; j < i; i--, j++)
+  reverse(s);
+}
+
+void reverse(char s[])
+{
+  int i, j, aux;
+
+  for (i = 0, j = strlen(s) - 1; i < j; i++, j--)
   {
     aux = s[i];
     s[i] = s[j];

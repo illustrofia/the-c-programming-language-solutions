@@ -1,52 +1,61 @@
-// Birth of itob()
-
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define MAXLEN 100
 
 void itob(int n, char s[], int b);
+char itoc(int a);
+void reverse(char s[]);
 
 int main(void)
 {
-    char s[MAXLEN];
-    int n = 254;
-    int b = 16;
+  char s[MAXLEN];
+  int n = 56;
+  int b = 16;
 
-    itob(n, s, b);
+  itob(n, s, b);
 
-    printf("%s\n", s);
+  printf("%s\n", s);
 }
 
 void itob(int n, char s[], int b)
 {
-    int i = 0, sign = n;
+  int i = 0, sign = n;
 
-    do
-    {
-        if (n % b <= 9)
-        {
-            s[i++] = '0' + n % b;
-        }
-        else
-        {
-            s[i++] = 'a' + n % b - 10;
-        }
+  do
+  {
+    s[i++] = itoc(abs(n) % b);
+  } while (n /= b);
 
-        n /= b;
-    }
-    while (n > 0);
+  if (sign < 0)
+  {
+    s[i++] = '-';
+  }
 
-    if (sign < 0)
-    {
-        s[i++] = '-';
-    }
+  s[i] = '\0';
 
-    s[i--] = '\0';
+  reverse(s);
+}
 
-    for (int j = 0; j < i; i--, j++)
-    {
-        sign = s[j];
-        s[j] = s[i];
-        s[i] = sign;
-    }
+char itoc(int a)
+{
+  if (a <= 9)
+  {
+    return a + '0';
+  }
+
+  return a + 'a' - 10;
+}
+
+void reverse(char s[])
+{
+  int i, j, aux;
+
+  for (i = 0, j = strlen(s) - 1; i < j; i++, j--)
+  {
+    aux = s[i];
+    s[i] = s[j];
+    s[j] = aux;
+  }
 }
