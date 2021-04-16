@@ -1,7 +1,6 @@
-// Version of atof() that handles scientific notation
-
 #include <stdio.h>
 #include <ctype.h>
+#include <math.h>
 
 #define MAXLEN 100
 
@@ -10,94 +9,83 @@ double atof(char s[]);
 
 int main(void)
 {
-    char line[MAXLEN];
+  char line[MAXLEN];
 
-    getsline(line, MAXLEN);
+  getsline(line, MAXLEN);
 
-    printf("%f\n", atof(line));
+  printf("%.12f\n", atof(line));
 
-    return 0;
+  return 0;
 }
 
 int getsline(char line[], int lim)
 {
-    int i = 0, c;
+  int i = 0, c;
 
-    while (i < lim - 1 && (c = getchar()) != '\n')
-    {
-        line[i] = c;
-        ++i;
-    }
+  while (i < lim - 1 && (c = getchar()) != '\n')
+  {
+    line[i] = c;
+    ++i;
+  }
 
-    if (c == '\n')
-    {
-        line[i++] = c;
-    }
+  if (c == '\n')
+  {
+    line[i++] = c;
+  }
 
-    line[i] = '\0';
+  line[i] = '\0';
 
-    return i;
+  return i;
 }
 
 double atof(char s[])
 {
-    double val, power;
-    int i, sign, exp_sign, exp_power;
+  int i, sign, power, exp_sign, exp_power;
 
-    for (i = 0; isspace(s[i]); i++);
+  double number;
 
-    sign = (s[i] == '-') ? -1 : 1;
+  i = 0;
 
-    if (s[i] == '+' || s[i] == '-')
-    {
-        i++;
-    }
+  for (i = 0; isblank(s[i]); i++)
+    ;
 
-    for (val = 0.0; isdigit(s[i]); i++)
-    {
-        val = 10.0 * val + (s[i] - '0');
-    }
+  sign = (s[i] == '-') ? -1 : 1;
 
-    if (s[i] == '.')
-    {
-        i++;
-    }
+  if (s[i] == '-' || s[i] == '+')
+  {
+    i++;
+  }
 
-    for (power = 1.0; isdigit(s[i]); i++)
-    {
-        val = 10.0 * val + (s[i] - '0');
-        power /= 10;
-    }
+  for (number = 0; isdigit(s[i]); i++)
+  {
+    number = number * 10 + s[i] - '0';
+  }
 
-    if (s[i] == 'e' || s[i] == 'E')
-    {
-        if (s[++i] == '-')
-        {
-            exp_sign = -1;
-        }
-        else
-        {
-            exp_sign = 1;
-        }
+  if (s[i] == '.')
+  {
+    i++;
+  }
 
-        exp_power = 0;
-        while (isdigit(s[++i]))
-        {
-            exp_power = 10 * exp_power + (s[i] - '0');
-        }
+  for (power = 1; isdigit(s[i]); i++)
+  {
+    number = number * 10 + s[i] - '0';
+    power /= 10;
+  }
 
-        for (exp_power; exp_power > 0 ; exp_power--)
-        {
-            if (exp_sign < 0)
-            {
-                power /= 10;
-            }
-            else
-            {
-                power *= 10;
-            }
-        }
-    }
+  if (tolower(s[i]) == 'e')
+  {
+    i++;
+  }
 
-    return sign * val * power;
+  exp_sign = (s[i] == '-') ? -1 : 1;
+
+  for (exp_power = 0; isdigit(s[i]); i++)
+  {
+    exp_power = exp_power * 10 + s[i] - '0';
+  }
+
+  printf("%f\n", number);
+  number *= pow(10.0, power + exp_power);
+
+  return number;
 }
