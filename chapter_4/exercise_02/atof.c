@@ -40,7 +40,7 @@ int getsline(char line[], int lim)
 
 double atof(char s[])
 {
-  int i, sign, power, exp_sign, exp_power;
+  int i, power, number_sign, exp_sign, exp_power;
 
   double number;
 
@@ -49,7 +49,7 @@ double atof(char s[])
   for (i = 0; isblank(s[i]); i++)
     ;
 
-  sign = (s[i] == '-') ? -1 : 1;
+  number_sign = (s[i] == '-') ? -1 : 1;
 
   if (s[i] == '-' || s[i] == '+')
   {
@@ -66,26 +66,25 @@ double atof(char s[])
     i++;
   }
 
-  for (power = 1; isdigit(s[i]); i++)
+  for (power = 0; isdigit(s[i]); i++)
   {
     number = number * 10 + s[i] - '0';
-    power /= 10;
+    power--;
   }
 
-  if (tolower(s[i]) == 'e')
+  if (tolower(s[i++]) == 'e')
   {
-    i++;
+    exp_sign = (s[i++] == '-') ? -1 : 1;
   }
-
-  exp_sign = (s[i] == '-') ? -1 : 1;
 
   for (exp_power = 0; isdigit(s[i]); i++)
   {
     exp_power = exp_power * 10 + s[i] - '0';
   }
 
-  printf("%f\n", number);
-  number *= pow(10.0, power + exp_power);
+  exp_power *= exp_sign;
 
-  return number;
+  number *= pow(10, (power + exp_power));
+
+  return number * number_sign;
 }
