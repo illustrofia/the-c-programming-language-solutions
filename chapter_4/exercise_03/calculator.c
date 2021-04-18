@@ -41,7 +41,9 @@ int main(void)
         push(pop() / op2);
       }
       else
+      {
         printf("error: zero divisor\n");
+      }
       break;
 
     case '%':
@@ -50,7 +52,9 @@ int main(void)
         push((int)pop() % (int)op2);
       }
       else
+      {
         printf("error: zero divisor\n");
+      }
       break;
 
     case '\n':
