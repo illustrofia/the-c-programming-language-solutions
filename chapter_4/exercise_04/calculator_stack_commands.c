@@ -187,22 +187,19 @@ int getop(char s[])
 
   i = 0;
 
+  // Check if - is an operand or a sign
   if (c == '-')
   {
-    int next = getch();
+    s[++i] = c = getch();
 
-    if (isdigit(next))
+    if (!isdigit(c) && c != '.')
     {
-      s[++i] = c = next;
-    }
-    else if (next != '.')
-    {
-      if (next != EOF)
+      if (c != EOF)
       {
-        ungetch(next);
+        ungetch(c);
       }
 
-      return c;
+      return '-';
     }
   }
 
