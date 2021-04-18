@@ -122,7 +122,7 @@ int getop(char s[])
   {
     s[++i] = c = getch();
 
-    if (!isdigit(c))
+    if (!isdigit(c) && c != '.')
     {
       if (c != EOF)
       {
