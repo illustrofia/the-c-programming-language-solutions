@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -24,9 +23,10 @@ void varget();
 char var;
 
 void print_instructions();
+int getsline(char s[], int lim);
 
-void ungets(char s[]);
-char input[MAXINPUT] = "700 70 7 + +";
+char line[MAXLINE];
+int line_p;
 
 int main(void)
 {
@@ -36,101 +36,102 @@ int main(void)
 
   print_instructions();
 
-  while ((type = getop(s)) != EOF)
+  while (getsline(line, MAXLINE) != 0)
   {
-    switch (type)
+    line_p = 0;
+
+    while ((type = getop(s)) != '\0')
     {
-    case NUMBER:
-      push(atof(s));
-      break;
-
-    case VARGET:
-      varget();
-      break;
-
-    case VARSET:
-      varset(pop());
-      break;
-
-    case '$':
-      push(last_val);
-      break;
-
-    case '+':
-      push(pop() + pop());
-      break;
-
-    case '-':
-      op2 = pop();
-      push(pop() - op2);
-      break;
-
-    case '*':
-      push(pop() * pop());
-      break;
-
-    case '/':
-      if ((op2 = pop()) != 0)
+      switch (type)
       {
-        push(pop() / op2);
+      case NUMBER:
+        push(atof(s));
+        break;
+
+      case VARGET:
+        varget();
+        break;
+
+      case VARSET:
+        varset(pop());
+        break;
+
+      case '$':
+        push(last_val);
+        break;
+
+      case '+':
+        push(pop() + pop());
+        break;
+
+      case '-':
+        op2 = pop();
+        push(pop() - op2);
+        break;
+
+      case '*':
+        push(pop() * pop());
+        break;
+
+      case '/':
+        if ((op2 = pop()) != 0)
+        {
+          push(pop() / op2);
+        }
+        else
+          printf("error: zero divisor\n");
+        break;
+
+      case '%':
+        if ((op2 = pop()) != 0)
+        {
+          push((int)pop() % (int)op2);
+        }
+        else
+          printf("error: zero divisor\n");
+        break;
+
+      case '^':
+        op2 = pop();
+        push(pow(op2, pop()));
+        break;
+
+      case '~':
+        push(sin(pop()));
+        break;
+
+      case 'e':
+        push(exp(pop()));
+        break;
+
+      case '\n':
+        if (!is_empty())
+        {
+          last_val = pop();
+          printf("\t%.8g\n", last_val);
+        }
+        break;
+
+      case 'p':
+        print();
+        break;
+
+      case 'd':
+        duplicate();
+        break;
+
+      case 's':
+        swap();
+        break;
+
+      case 'c':
+        clear();
+        break;
+
+      default:
+        printf("error: unknown command %s\n", s);
+        break;
       }
-      else
-        printf("error: zero divisor\n");
-      break;
-
-    case '%':
-      if ((op2 = pop()) != 0)
-      {
-        push((int)pop() % (int)op2);
-      }
-      else
-        printf("error: zero divisor\n");
-      break;
-
-    case '^':
-      op2 = pop();
-      push(pow(op2, pop()));
-      break;
-
-    case '~':
-      push(sin(pop()));
-      break;
-
-    case 'e':
-      push(exp(pop()));
-      break;
-
-    case '\n':
-      if (!is_empty())
-      {
-        last_val = pop();
-        printf("\t%.8g\n", last_val);
-      }
-      break;
-
-    case 'p':
-      print();
-      break;
-
-    case 'd':
-      duplicate();
-      break;
-
-    case 's':
-      swap();
-      break;
-
-    case 'c':
-      clear();
-      break;
-
-    case 'u':
-      ungets(input);
-      break;
-
-    default:
-      printf("error: unknown command %s\n", s);
-      break;
     }
   }
 
@@ -229,14 +230,11 @@ int is_empty(void)
 
 #include <ctype.h>
 
-int getch(void);
-void ungetch(int);
-
 int getop(char s[])
 {
   int i, c;
 
-  while ((s[0] = c = getch()) == ' ' || c == '\t')
+  while ((s[0] = c = line[line_p++]) == ' ' || c == '\t')
     ;
 
   s[1] = '\0';
@@ -251,13 +249,13 @@ int getop(char s[])
   // Check if - is an operand or a sign
   if (c == '-')
   {
-    s[++i] = c = getch();
+    s[++i] = c = line[line_p++];
 
     if (!isdigit(c) && c != '.')
     {
       if (c != EOF)
       {
-        ungetch(c);
+        line_p--;
       }
 
       return '-';
@@ -266,13 +264,13 @@ int getop(char s[])
 
   if (isdigit(c))
   {
-    while (isdigit(s[++i] = c = getch()))
+    while (isdigit(s[++i] = c = line[line_p++]))
       ;
   }
 
   if (c == '.')
   {
-    while (isdigit(s[++i] = c = getch()))
+    while (isdigit(s[++i] = c = line[line_p++]))
       ;
   }
 
@@ -280,32 +278,10 @@ int getop(char s[])
 
   if (c != EOF)
   {
-    ungetch(c);
+    line_p--;
   }
 
   return NUMBER;
-}
-
-#define BUFSIZE 1
-
-int buf[BUFSIZE];
-int bufp = 0;
-
-int getch(void)
-{
-  return (bufp > 0) ? buf[--bufp] : getchar();
-}
-
-void ungetch(int c)
-{
-  if (bufp > BUFSIZE)
-  {
-    printf("ungetch: too many characters\n");
-  }
-  else
-  {
-    buf[bufp++] = c;
-  }
 }
 
 #define MAXVAR 26
@@ -315,7 +291,7 @@ int var_sp;
 
 void varset(double n)
 {
-  int next = getch();
+  int next = line[line_p++];
   if (isalpha(next) && next <= 'Z')
   {
     if (var_sp < MAXVAR && n != 0)
@@ -334,14 +310,14 @@ void varset(double n)
   }
   else
   {
-    ungetch(next);
+    line_p--;
     printf("error: only uppercase letter variables\n");
   }
 }
 
 void varget()
 {
-  int next = getch();
+  int next = line[line_p++];
   if (isalpha(next) && next <= 'Z')
   {
     if (varstack[next - 'A'])
@@ -355,18 +331,31 @@ void varget()
   }
   else
   {
+    line_p--;
     printf("error: only uppercase letter variables\n");
   }
 }
 
 #include <string.h>
 
-void ungets(char s[])
+int getsline(char s[], int lim)
 {
-  for (int i = strlen(s) - 1; i >= 0; i--)
+  int c, i;
+
+  i = 0;
+  while (--lim > 0 && (c = getchar()) != EOF && c != '\n')
   {
-    ungetch(s[i]);
+    s[i++] = c;
   }
+
+  if (c == '\n')
+  {
+    s[i++] = c;
+  }
+
+  s[i] = '\0';
+
+  return i;
 }
 
 void print_instructions()
