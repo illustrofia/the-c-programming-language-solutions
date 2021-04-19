@@ -27,7 +27,7 @@ int main(void)
 {
   int type;
   double op2, last_val;
-  char s[MAXOP]; //, line[MAXLINE];
+  char s[MAXOP];
 
   print_instructions();
 
