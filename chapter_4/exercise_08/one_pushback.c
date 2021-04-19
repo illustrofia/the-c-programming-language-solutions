@@ -297,7 +297,7 @@ int getch(void)
 
 void ungetch(int c)
 {
-  if (bufp >= BUFSIZE)
+  if (bufp > BUFSIZE)
   {
     printf("ungetch: too many characters\n");
   }
