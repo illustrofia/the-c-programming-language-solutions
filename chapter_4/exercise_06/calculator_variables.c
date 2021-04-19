@@ -211,7 +211,7 @@ int is_empty(void)
     {
         return 0;
     }
-    
+
     return 1;
 }
 
@@ -247,7 +247,7 @@ double varget(char var)
     {
         printf("error: variable %c not set\n", var);
     }
-    
+
 }
 
 #include <ctype.h>
@@ -275,13 +275,13 @@ int getop(char line[], char s[])
     {
         return c;
     }
-    
+
     i = 0;
 
     if (c == '-')
     {
         int next = getch();
-        
+
         if (isdigit(next))
         {
             s[++i] = c = next;
@@ -315,7 +315,7 @@ int getop(char line[], char s[])
     }
 
     return NUMBER;
-    
+
 }
 
 int getsline(char line[], int lim)
