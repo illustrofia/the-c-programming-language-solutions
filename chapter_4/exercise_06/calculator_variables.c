@@ -5,10 +5,10 @@
 #define MAXLINE 500
 #define MAXOP 100
 #define NUMBER '0'
-#define VARGET 'A'
+#define VARGET '#'
 #define VARSET '_'
 
-int getop(char line[], char s[]);
+int getop(char s[]);
 void push(double);
 double pop(void);
 void print();
@@ -17,114 +17,114 @@ void swap();
 void clear();
 int is_empty(void);
 
-int getsline(char line[], int lim);
-
 void varset(double n);
-double varget(char var);
+void varget();
 char var;
+
+void print_instructions();
 
 int main(void)
 {
   int type;
   double op2, last_val;
-  char s[MAXOP], line[MAXLINE];
+  char s[MAXOP]; //, line[MAXLINE];
 
-  while (getsline(line[MAXLINE], MAXOP))
+  print_instructions();
+
+  while ((type = getop(s)) != EOF)
   {
-    while ((type = getop(line, s)) != EOF)
+    switch (type)
     {
-      switch (type)
+    case NUMBER:
+      push(atof(s));
+      break;
+
+    case VARGET:
+      varget();
+      break;
+
+    case VARSET:
+      varset(pop());
+      break;
+
+    case '$':
+      push(last_val);
+      break;
+
+    case '+':
+      push(pop() + pop());
+      break;
+
+    case '-':
+      op2 = pop();
+      push(pop() - op2);
+      break;
+
+    case '*':
+      push(pop() * pop());
+      break;
+
+    case '/':
+      if ((op2 = pop()) != 0)
       {
-      case NUMBER:
-        push(atof(s));
-        break;
-
-      case VARGET:
-        varget(var);
-        break;
-
-      case VARSET:
-        varset(pop());
-        break;
-
-      case '$':
-        push(last_val);
-        break;
-
-      case '+':
-        push(pop() + pop());
-        break;
-
-      case '-':
-        op2 = pop();
-        push(pop() - op2);
-        break;
-
-      case '*':
-        push(pop() * pop());
-        break;
-
-      case '/':
-        if ((op2 = pop()) != 0)
-        {
-          push(pop() / op2);
-        }
-        else
-          printf("error: zero divisor\n");
-        break;
-
-      case '%':
-        if ((op2 = pop()) != 0)
-        {
-          push((int)pop() % (int)op2);
-        }
-        else
-          printf("error: zero divisor\n");
-        break;
-
-      case '^':
-        op2 = pop();
-        push(pow(op2, pop()));
-        break;
-
-      case '~':
-        push(sin(pop()));
-        break;
-
-      case 'e':
-        push(exp(pop()));
-        break;
-
-      case '\n':
-        if (!is_empty())
-        {
-          last_val = pop();
-          printf("\t%.8g\n", last_val);
-        }
-        break;
-
-      case 'p':
-        print();
-        break;
-
-      case 'd':
-        duplicate();
-        break;
-
-      case 's':
-        swap();
-        break;
-
-      case 'c':
-        clear();
-        break;
-
-      default:
-        printf("error: unknown command %s\n", s);
-        break;
+        push(pop() / op2);
       }
+      else
+        printf("error: zero divisor\n");
+      break;
+
+    case '%':
+      if ((op2 = pop()) != 0)
+      {
+        push((int)pop() % (int)op2);
+      }
+      else
+        printf("error: zero divisor\n");
+      break;
+
+    case '^':
+      op2 = pop();
+      push(pow(op2, pop()));
+      break;
+
+    case '~':
+      push(sin(pop()));
+      break;
+
+    case 'e':
+      push(exp(pop()));
+      break;
+
+    case '\n':
+      if (!is_empty())
+      {
+        last_val = pop();
+        printf("\t%.8g\n", last_val);
+      }
+      break;
+
+    case 'p':
+      print();
+      break;
+
+    case 'd':
+      duplicate();
+      break;
+
+    case 's':
+      swap();
+      break;
+
+    case 'c':
+      clear();
+      break;
+
+    default:
+      printf("error: unknown command %s\n", s);
+      break;
     }
   }
+
   return 0;
 }
 
@@ -205,7 +205,7 @@ void clear()
     sp = 0;
   }
   else
-    printf("error: stack already empty");
+    printf("error: stack already empty\n");
 }
 
 int is_empty(void)
@@ -218,61 +218,19 @@ int is_empty(void)
   return 1;
 }
 
-#define MAXVAR 26
-
-double varstack[MAXVAR];
-int var_sp;
-
-void varset(double n)
-{
-  if (var_sp < MAXVAR && n != 0)
-  {
-    varstack[var_sp++] = n;
-    printf("variable %c = %.3f\n", 'A' + var_sp - 1, n);
-  }
-  else if (var_sp >= MAXVAR)
-  {
-    printf("error: variable stack overflow\n");
-  }
-  else
-  {
-    printf("error: cannot set variable to 0\n");
-  }
-}
-
-double varget(char var)
-{
-  if (varstack[var - 'A'])
-  {
-    push(varstack[var - 'A']);
-  }
-  else
-  {
-    printf("error: variable %c not set\n", var);
-  }
-}
-
 #include <ctype.h>
 
-int getop(char line[], char s[])
-{
-  int i, c, j;
+int getch(void);
+void ungetch(int);
 
-  while ((s[0] = c = line[j++]) == ' ' || c == '\t')
+int getop(char s[])
+{
+  int i, c;
+
+  while ((s[0] = c = getch()) == ' ' || c == '\t')
     ;
 
   s[1] = '\0';
-
-  if (isalpha(c) && c <= 'Z')
-  {
-    var = c;
-    return VARGET;
-  }
-
-  if (c == '$')
-  {
-    return c;
-  }
 
   if (!isdigit(c) && c != '.' && c != '-')
   {
@@ -281,22 +239,19 @@ int getop(char line[], char s[])
 
   i = 0;
 
+  // Check if - is an operand or a sign
   if (c == '-')
   {
-    int next = getch();
+    s[++i] = c = getch();
 
-    if (isdigit(next))
+    if (!isdigit(c) && c != '.')
     {
-      s[++i] = c = next;
-    }
-    else if (next != '.')
-    {
-      if (next != EOF)
+      if (c != EOF)
       {
-        ungetch(next);
+        ungetch(c);
       }
 
-      return c;
+      return '-';
     }
   }
 
@@ -322,22 +277,83 @@ int getop(char line[], char s[])
   return NUMBER;
 }
 
-int getsline(char line[], int lim)
+#define BUFSIZE 100
+
+char buf[BUFSIZE];
+int bufp = 0;
+
+int getch(void)
 {
-  int i = 0, c;
+  return (bufp > 0) ? buf[--bufp] : getchar();
+}
 
-  while (i < lim - 1 && (c = getchar()) != '\n')
+void ungetch(int c)
+{
+  if (bufp >= BUFSIZE)
   {
-    line[i] = c;
-    ++i;
+    printf("ungetch: too many characters\n");
   }
-
-  if (c == '\n')
+  else
   {
-    line[i++] = c;
+    buf[bufp++] = c;
   }
+}
 
-  line[i] = '\0';
+#define MAXVAR 26
 
-  return i;
+double varstack[MAXVAR];
+int var_sp;
+
+void varset(double n)
+{
+  int next = getch();
+  if (isalpha(next) && next <= 'Z')
+  {
+    if (var_sp < MAXVAR && n != 0)
+    {
+      varstack[next - 'A'] = n;
+      printf("variable %c = %.3f\n", next, varstack[next - 'A']);
+    }
+    else if (var_sp >= MAXVAR)
+    {
+      printf("error: variable stack overflow\n");
+    }
+    else
+    {
+      printf("error: cannot set variable to 0\n");
+    }
+  }
+  else
+  {
+    ungetch(next);
+    printf("error: only uppercase letter variables\n");
+  }
+}
+
+void varget()
+{
+  int next = getch();
+  if (isalpha(next) && next <= 'Z')
+  {
+    if (varstack[next - 'A'])
+    {
+      push(varstack[next - 'A']);
+    }
+    else
+    {
+      printf("error: variable %c not set\n", next);
+    }
+  }
+  else
+  {
+    printf("error: only uppercase letter variables\n");
+  }
+}
+
+void print_instructions()
+{
+  printf("Commands:\n");
+  printf("set variable: _[name]\n");
+  printf("get variable [name]: #[name]\n");
+  printf("last printed value: $\n");
 }
