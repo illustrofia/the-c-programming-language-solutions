@@ -7,24 +7,24 @@
 
 int main(int argc, char *argv[])
 {
-    int c, tab;
+  int c, tab;
 
-    tab = (argc > 1) ? atoi(argv[1]) : TAB;
+  tab = (argc > 1) ? atoi(argv[1]) : TAB;
 
-    while ((c = getchar()) != EOF)
+  while ((c = getchar()) != EOF)
+  {
+    if (c == '\t')
     {
-        if (c == '\t')
-        {
-            for (int i = 0; i < tab; i++)
-            {
-                putchar(' ');
-            }
-        }
-        else 
-        {
-            putchar(c);
-        }
+      for (int i = 0; i < tab; i++)
+      {
+        putchar(' ');
+      }
     }
-    
-    return 0;
+    else
+    {
+      putchar(c);
+    }
+  }
+
+  return 0;
 }

@@ -7,35 +7,35 @@
 
 int main(int argc, char *argv[])
 {
-    int c;
-    int blanks = 0;
-    int tab;
+  int c;
+  int blanks = 0;
+  int tab;
 
-    tab = (argc > 1) ? atoi(argv[1]) : TAB;
+  tab = (argc > 1) ? atoi(argv[1]) : TAB;
 
-    while ((c = getchar()) != EOF)
+  while ((c = getchar()) != EOF)
+  {
+    if (c == ' ')
     {
-        if (c == ' ')
-        {
-            blanks++;
+      blanks++;
 
-            if (blanks == tab)
-            {
-                putchar('\t');
+      if (blanks == tab)
+      {
+        putchar('\t');
 
-                blanks = 0;
-            }
-        }
-        else
-        {
-            for (blanks; blanks > 0; blanks--)
-            {
-                putchar(' ');
-            }
-
-            putchar(c);
-        }
+        blanks = 0;
+      }
     }
-    
-    return 0;
+    else
+    {
+      for (blanks; blanks > 0; blanks--)
+      {
+        putchar(' ');
+      }
+
+      putchar(c);
+    }
+  }
+
+  return 0;
 }

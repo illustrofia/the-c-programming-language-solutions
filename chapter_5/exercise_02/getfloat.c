@@ -10,13 +10,13 @@ int getfloat(double *pn);
 
 int main(void)
 {
-    double number = 0.0;
+  double number = 0.0;
 
-    getfloat(&number);
+  getfloat(&number);
 
-    printf("%f\n", number);
+  printf("%f\n", number);
 
-    return 0;
+  return 0;
 }
 
 int getch(void);
@@ -24,64 +24,65 @@ void ungetch(int c);
 
 int getfloat(double *pn)
 {
-    int c, sign;
-    double power;
+  int c, sign;
+  double power;
 
-    while(isspace(c = getch()));
+  while (isspace(c = getch()))
+    ;
 
-    if (!isdigit(c) && c != EOF && c != '+' && c != '-')
+  if (!isdigit(c) && c != EOF && c != '+' && c != '-')
+  {
+    ungetch(c);
+    return 0;
+  }
+
+  sign = (c == '-') ? -1 : 1;
+
+  if (c == '+' || c == '-')
+  {
+    c = getch();
+
+    if (!isdigit(c))
     {
-        ungetch(c);
-        return 0;
+      ungetch(c);
+      ungetch(sign == 1 ? '+' : '-');
+      return 0;
     }
+  }
 
-    sign = (c == '-') ? -1 : 1;
+  for (*pn = 0.0; isdigit(c); c = getch())
+  {
+    *pn = 10.0 * *pn + (c - '0');
+  }
 
-    if (c == '+' || c == '-')
+  if (c == '.')
+  {
+    c = getch();
+
+    if (!isdigit(c))
     {
-        c = getch();
-
-        if (!isdigit(c))
-        {
-            ungetch(c);
-            ungetch(sign == 1 ? '+' : '-');
-            return 0;
-        }
+      ungetch(c);
+      ungetch('.');
+      return 0;
     }
+  }
 
-    for (*pn = 0.0; isdigit(c); c = getch())
-    {
-        *pn = 10.0 * *pn + (c - '0');
-    }
+  for (power = 1.0; isdigit(c); c = getch())
+  {
+    *pn = 10.0 * *pn + (c - '0');
+    power /= 10;
+  }
 
-    if (c == '.')
-    {
-        c = getch();
+  *pn *= sign;
 
-        if (!isdigit(c))
-        {
-            ungetch(c);
-            ungetch ('.');
-            return 0;
-        }
-    }
+  *pn *= power;
 
-    for (power = 1.0; isdigit(c); c = getch())
-    {
-        *pn = 10.0 * *pn + (c - '0');
-        power /= 10;
-    }
+  if (c != EOF)
+  {
+    ungetch(c);
+  }
 
-    *pn *= sign;
-
-    *pn *= power;
-
-    if (c != EOF)
-    {
-        ungetch(c);
-    }
-
-    return c;
+  return c;
 }
 
 #define BUFSIZE 100
@@ -91,17 +92,17 @@ int bufp = 0;
 
 int getch(void)
 {
-    return (bufp > 0) ? buf[--bufp] : getchar();
+  return (bufp > 0) ? buf[--bufp] : getchar();
 }
 
 void ungetch(int c)
 {
-    if (bufp >= BUFSIZE)
-    {
-        printf("ungetch: too many characters\n");
-    }
-    else
-    {
-        buf[bufp++] = c;
-    }
+  if (bufp >= BUFSIZE)
+  {
+    printf("ungetch: too many characters\n");
+  }
+  else
+  {
+    buf[bufp++] = c;
+  }
 }
