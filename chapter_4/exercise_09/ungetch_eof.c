@@ -1,3 +1,8 @@
+// To be able to push back eof character,
+// we can declare the buf[] array as an int array.
+// Then, the EOF character will be stored
+// as -1.
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
