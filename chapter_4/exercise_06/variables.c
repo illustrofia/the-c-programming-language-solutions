@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define MAXLINE 500
 #define MAXOP 100
 #define NUMBER '0'
 #define VARGET '#'
