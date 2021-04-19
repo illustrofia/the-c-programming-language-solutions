@@ -1,15 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <string.h>
 
+#define MAXLINE 500
 #define MAXOP 100
 #define NUMBER '0'
-#define VARGET 'A'
+#define VARGET '#'
 #define VARSET '_'
 #define MAXINPUT 100
 
-int getop(char[]);
+int getop(char s[]);
 void push(double);
 double pop(void);
 void print();
@@ -19,8 +19,10 @@ void clear();
 int is_empty(void);
 
 void varset(double n);
-double varget(char var);
+void varget();
 char var;
+
+void print_instructions();
 
 void ungets(char s[]);
 char input[MAXINPUT] = "700 70 7 + +";
@@ -29,7 +31,9 @@ int main(void)
 {
   int type;
   double op2, last_val;
-  char s[MAXOP];
+  char s[MAXOP]; //, line[MAXLINE];
+
+  print_instructions();
 
   while ((type = getop(s)) != EOF)
   {
@@ -40,7 +44,7 @@ int main(void)
       break;
 
     case VARGET:
-      varget(var);
+      varget();
       break;
 
     case VARSET:
@@ -209,7 +213,7 @@ void clear()
     sp = 0;
   }
   else
-    printf("error: stack already empty");
+    printf("error: stack already empty\n");
 }
 
 int is_empty(void)
@@ -220,40 +224,6 @@ int is_empty(void)
   }
 
   return 1;
-}
-
-#define MAXVAR 26
-
-double varstack[MAXVAR];
-int var_sp;
-
-void varset(double n)
-{
-  if (var_sp < MAXVAR && n != 0)
-  {
-    varstack[var_sp++] = n;
-    printf("variable %c = %.3f\n", 'A' + var_sp - 1, n);
-  }
-  else if (var_sp >= MAXVAR)
-  {
-    printf("error: variable stack overflow\n");
-  }
-  else
-  {
-    printf("error: cannot set variable to 0\n");
-  }
-}
-
-double varget(char var)
-{
-  if (varstack[var - 'A'])
-  {
-    push(varstack[var - 'A']);
-  }
-  else
-  {
-    printf("error: variable %c not set\n", var);
-  }
 }
 
 #include <ctype.h>
@@ -270,17 +240,6 @@ int getop(char s[])
 
   s[1] = '\0';
 
-  if (isalpha(c) && c <= 'Z')
-  {
-    var = c;
-    return VARGET;
-  }
-
-  if (c == '$')
-  {
-    return c;
-  }
-
   if (!isdigit(c) && c != '.' && c != '-')
   {
     return c;
@@ -288,22 +247,19 @@ int getop(char s[])
 
   i = 0;
 
+  // Check if - is an operand or a sign
   if (c == '-')
   {
-    int next = getch();
+    s[++i] = c = getch();
 
-    if (isdigit(next))
+    if (!isdigit(c) && c != '.')
     {
-      s[++i] = c = next;
-    }
-    else if (next != '.')
-    {
-      if (next != EOF)
+      if (c != EOF)
       {
-        ungetch(next);
+        ungetch(c);
       }
 
-      return c;
+      return '-';
     }
   }
 
@@ -331,27 +287,78 @@ int getop(char s[])
 
 #define BUFSIZE 1
 
-char buf;
+char buf[BUFSIZE];
 int bufp = 0;
 
 int getch(void)
 {
-  if (bufp > 0)
-  {
-    bufp = 0;
-    return buf;
-  }
-  else
-  {
-    return getchar();
-  }
+  return (bufp > 0) ? buf[--bufp] : getchar();
 }
 
 void ungetch(int c)
 {
-  buf = c;
-  bufp++;
+  if (bufp >= BUFSIZE)
+  {
+    printf("ungetch: too many characters\n");
+  }
+  else
+  {
+    buf[bufp++] = c;
+  }
 }
+
+#define MAXVAR 26
+
+double varstack[MAXVAR];
+int var_sp;
+
+void varset(double n)
+{
+  int next = getch();
+  if (isalpha(next) && next <= 'Z')
+  {
+    if (var_sp < MAXVAR && n != 0)
+    {
+      varstack[next - 'A'] = n;
+      printf("variable %c = %.3f\n", next, varstack[next - 'A']);
+    }
+    else if (var_sp >= MAXVAR)
+    {
+      printf("error: variable stack overflow\n");
+    }
+    else
+    {
+      printf("error: cannot set variable to 0\n");
+    }
+  }
+  else
+  {
+    ungetch(next);
+    printf("error: only uppercase letter variables\n");
+  }
+}
+
+void varget()
+{
+  int next = getch();
+  if (isalpha(next) && next <= 'Z')
+  {
+    if (varstack[next - 'A'])
+    {
+      push(varstack[next - 'A']);
+    }
+    else
+    {
+      printf("error: variable %c not set\n", next);
+    }
+  }
+  else
+  {
+    printf("error: only uppercase letter variables\n");
+  }
+}
+
+#include <string.h>
 
 void ungets(char s[])
 {
@@ -359,4 +366,12 @@ void ungets(char s[])
   {
     ungetch(s[i]);
   }
+}
+
+void print_instructions()
+{
+  printf("Commands:\n");
+  printf("set variable: _[name]\n");
+  printf("get variable [name]: #[name]\n");
+  printf("last printed value: $\n");
 }
