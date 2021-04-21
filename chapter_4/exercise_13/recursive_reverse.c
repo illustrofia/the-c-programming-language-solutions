@@ -1,5 +1,3 @@
-// Birth of recursive version of reverse()
-
 #include <stdio.h>
 #include <string.h>
 
