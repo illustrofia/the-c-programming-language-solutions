@@ -1,5 +1,3 @@
-// Birth of getfloat()
-
 #include <stdio.h>
 #include <ctype.h>
 
@@ -40,9 +38,7 @@ int getfloat(double *pn)
 
   if (c == '+' || c == '-')
   {
-    c = getch();
-
-    if (!isdigit(c))
+    if (!isdigit(c = getch()))
     {
       ungetch(c);
       ungetch(sign == 1 ? '+' : '-');
@@ -57,9 +53,7 @@ int getfloat(double *pn)
 
   if (c == '.')
   {
-    c = getch();
-
-    if (!isdigit(c))
+    if (!isdigit(c = getch()))
     {
       ungetch(c);
       ungetch('.');
@@ -73,9 +67,7 @@ int getfloat(double *pn)
     power /= 10;
   }
 
-  *pn *= sign;
-
-  *pn *= power;
+  *pn = *pn * sign * power;
 
   if (c != EOF)
   {
