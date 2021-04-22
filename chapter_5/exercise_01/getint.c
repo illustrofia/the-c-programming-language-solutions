@@ -1,5 +1,3 @@
-// Fixed getint()
-
 #include <stdio.h>
 #include <ctype.h>
 
@@ -42,9 +40,7 @@ int getint(int *pn)
 
   if (c == '+' || c == '-')
   {
-    c = getch();
-
-    if (!isdigit(c))
+    if (!isdigit(c = getch()))
     {
       ungetch(c);
       ungetch(sign == 1 ? '+' : '-');
