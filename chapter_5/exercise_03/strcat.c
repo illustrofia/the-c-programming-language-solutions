@@ -1,5 +1,3 @@
-// Pointer version of strcat()
-
 #include <stdio.h>
 
 #define MAXLEN 100
@@ -20,11 +18,11 @@ int main(void)
 
 void pointer_strcat(char *s, char *t)
 {
-  // Get to end of s
+  // Get to '\0' of s
   while (*++s)
     ;
 
-  // Concatenate t at end of s
+  // Copy until '\0' of t
   while (*s++ = *t++)
     ;
 }
