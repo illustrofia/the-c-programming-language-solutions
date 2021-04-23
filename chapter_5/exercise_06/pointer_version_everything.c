@@ -5,7 +5,7 @@
 
 #define MAXLEN 100
 
-void getsline(char *s);
+int getsline(char *s, int lim);
 int atoi(char *s);
 void reverse(char *s);
 int strindex(char *s, char *t);
@@ -18,7 +18,7 @@ int main(void)
 
   // Testing getsline() and reverse()
   printf("String to reverse: ");
-  getsline(s);
+  getsline(s, MAXLEN);
 
   reverse(s);
 
@@ -26,16 +26,16 @@ int main(void)
 
   // Testing atoi()
   printf("String to convert into integer: ");
-  getsline(s);
+  getsline(s, MAXLEN);
 
   printf("String \"%s\" into integer: %i\n\n", s, atoi(s));
 
   // Testing strindex()
   printf("String to search into: ");
-  getsline(s);
+  getsline(s, MAXLEN);
 
   printf("String to find: ");
-  getsline(t);
+  getsline(t, MAXLEN);
 
   int index = strindex(s, t);
 
@@ -58,17 +58,6 @@ int main(void)
   printf("s after getop is equal to \"%s\"\n", s);
 
   return 1;
-}
-
-// getsline: gets line of input
-void getsline(char *s)
-{
-  while ((*s = getchar()) != EOF && (*s != '\n'))
-  {
-    s++;
-  }
-
-  *s = '\0';
 }
 
 // reverse: reverses string s in place
@@ -183,4 +172,19 @@ int getop(char *s)
   *s = '\0';
 
   return NUMBER;
+}
+
+int getsline(char *s, int lim)
+{
+  int length = 0;
+
+  while ((*s = getchar()) != EOF && *s != '\n' && lim--)
+  {
+    s++;
+    length++;
+  }
+
+  *s = '\0';
+
+  return length;
 }
