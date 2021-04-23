@@ -26,12 +26,13 @@ int strend(char *s, char *t)
 {
   char *t_start = t;
 
+  // Advance both pointers until '\0'
   while (*++s)
     ;
-
   while (*++t)
     ;
 
+  // Compare characters until start of t
   while (t_start <= t)
   {
     if (*s-- != *t--)
