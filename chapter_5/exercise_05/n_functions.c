@@ -1,6 +1,3 @@
-// Pointer versions of the library functions
-// strncpy(), strncat() and strncmp()
-
 #include <stdio.h>
 
 #define MAXLEN 100
@@ -11,35 +8,38 @@ int strncmp_ptr(char *s, char *t, int n);
 
 int main(void)
 {
-  char s[MAXLEN] = "I really love chocolate!";
-  char t[MAXLEN] = " But I like icecream more!";
-  char b[MAXLEN] = "I really loathe chocolate.";
-
-  printf("Initial s: %s\nInitial b: %s\nInitial t: %s\n", s, b, t);
-
-  // Testing strncpy_ptr
+  char s[MAXLEN] = "I really love chocolate.";
+  char b[MAXLEN] = "We don't loathe chocolate.";
   int n = 11;
 
+  printf("Initial s: \"%s\"\nInitial b: \"%s\"\n", s, b);
+
+  /**
+   * Testing strncpy_ptr
+  **/
+  printf("\nCopying at most %d characters from b to s...\n", n);
   strncpy_ptr(s, b, n);
+  printf("s: \"%s\"\n", s);
 
-  printf("\ns after copying %d characters from b: %s\n", n, s);
-
-  // Testing strncmp_ptr
-  if (strncmp_ptr(s, b, 11) == 0)
+  /**
+   * Testing strncmp_ptr
+  **/
+  printf("\nComparing at most %d characters of s to b...", n);
+  if (strncmp_ptr(s, b, n) == 0)
   {
-    printf("\nFirst %d characters of s are the same as b.\n", n);
+    printf("\ns == b\n");
   }
   else
   {
-    printf("\nFirst %d characters of s are not the same as b.\n", n);
+    printf("\ns != b\n");
   }
 
-  // Testing strncat_ptr
-  int m = 15;
-
-  strncat_ptr(s, t, m);
-
-  printf("\ns after concatenating %d characters from b to end of s: %s\n", m, s);
+  /**
+   * Testing strncat_ptr
+  **/
+  printf("\nCopying at most %d characters from b to end of s...\n", n);
+  strncat_ptr(s, b, n);
+  printf("\ns: \"%s\"\n", s);
 
   return 0;
 }
@@ -47,51 +47,26 @@ int main(void)
 // Copies no more than n characters of t to s.
 void strncpy_ptr(char *s, char *t, int n)
 {
-  while (*s++ = *t++)
-  {
-    if (!--n)
-    {
-      break;
-    }
-  }
+  while (n-- && (*s++ = *t++))
+    ;
 }
 
 // Concatenates n characters of t to end of s.
 void strncat_ptr(char *s, char *t, int n)
 {
-  // Get to end of s
   while (*++s)
     ;
 
-  // Concatenate n characters of t to end of s
-  while (*s++ = *t++)
-  {
-    if (!--n)
-    {
-      break;
-    }
-  }
-
-  *++s = '\0';
+  while (n-- && (*s++ = *t++))
+    ;
 }
 
-// Compares n characters of s and t.
-// Returns negative, zero, or positive for
-// s < t, s == t or s > t.
+// Compare at most n characters of string s to string t.
+// Returns negative, zero, or positive for s < t, s == t or s > t.
 int strncmp_ptr(char *s, char *t, int n)
 {
-  for (; *s == *t; *s++, *t++)
-  {
-    if (*s == '\0')
-    {
-      return 0;
-    }
-
-    if (!--n)
-    {
-      break;
-    }
-  }
+  while (--n && *s++ == *t++)
+    ;
 
   return *s - *t;
 }
