@@ -81,29 +81,6 @@ void reverse(char *s)
   }
 }
 
-// atoi: converts string of characters into integer
-int atoi(char *s)
-{
-  int n, sign;
-
-  for (; isspace(*s); s++)
-    ;
-
-  sign = (*s == '-') ? -1 : 1;
-
-  if (*s == '+' || *s == '-')
-  {
-    s++;
-  }
-
-  for (n = 0; isdigit(*s); s++)
-  {
-    n = 10 * n + (*s - '0');
-  }
-
-  return sign * n;
-}
-
 // strindex: return index of t in s, -1 if none
 int strindex(char *s, char *t)
 {
@@ -187,4 +164,27 @@ int getsline(char *s, int lim)
   *s = '\0';
 
   return length;
+}
+
+// atoi: converts string of characters into integer
+int atoi(char *s)
+{
+  int n, sign;
+
+  for (; isspace(*s); s++)
+    ;
+
+  sign = (*s = '-') ? -1 : 1;
+
+  if (*s == '-' || *s == '+')
+  {
+    s++;
+  }
+
+  for (n = 0; isdigit(*s); s++)
+  {
+    n = n * 10 + (*s - '0');
+  }
+
+  return n * sign;
 }
