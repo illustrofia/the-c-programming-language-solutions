@@ -1,12 +1,13 @@
-// La parole est d'argent, le silence est d'or.
-
 #include <stdio.h>
+#include <stdlib.h>
 #include <ctype.h>
+#include <math.h>
 
 #define MAXLEN 100
 
 int getsline(char *s, int lim);
-int atoi(char *s);
+int atoi_ptr(char *s);
+void itoa_ptr(int n, char *s);
 void reverse(char *s);
 int strindex(char *s, char *t);
 int getop(char *s);
@@ -15,6 +16,7 @@ int main(void)
 {
   char s[MAXLEN];
   char t[MAXLEN];
+  int n;
 
   // Testing getsline() and reverse()
   printf("String to reverse: ");
@@ -28,7 +30,13 @@ int main(void)
   printf("String to convert into integer: ");
   getsline(s, MAXLEN);
 
-  printf("String \"%s\" into integer: %i\n\n", s, atoi(s));
+  n = atoi_ptr(s);
+
+  printf("String \"%s\" into integer: %i\n\n", s, n);
+
+  itoa_ptr(n, s);
+
+  printf("Integer %i into string: \"%s\"\n\n", n, s);
 
   // Testing strindex()
   printf("String to search into: ");
@@ -167,14 +175,14 @@ int getsline(char *s, int lim)
 }
 
 // atoi: converts string of characters into integer
-int atoi(char *s)
+int atoi_ptr(char *s)
 {
   int n, sign;
 
   for (; isspace(*s); s++)
     ;
 
-  sign = (*s = '-') ? -1 : 1;
+  sign = (*s == '-') ? -1 : 1;
 
   if (*s == '-' || *s == '+')
   {
@@ -187,4 +195,26 @@ int atoi(char *s)
   }
 
   return n * sign;
+}
+
+void itoa_ptr(int n, char *s)
+{
+  char *s_start = s;
+
+  int sign = (n < 0) ? -1 : 1;
+
+  while (n)
+  {
+    *s++ = abs(n) % 10 + '0';
+    n /= 10;
+  }
+
+  if (sign < 0)
+  {
+    *s++ = '-';
+  }
+
+  *s = '\0';
+
+  reverse(s_start);
 }
