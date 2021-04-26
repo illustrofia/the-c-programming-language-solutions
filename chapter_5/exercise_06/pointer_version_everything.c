@@ -68,53 +68,6 @@ int main(void)
   return 1;
 }
 
-// reverse: reverses string s in place
-void reverse(char *s)
-{
-  char aux;
-  char *p = s;
-
-  // Get to end of s, before '\0'
-  while (*++s)
-    ;
-
-  s--;
-
-  // Interchange characters
-  while (p < s)
-  {
-    aux = *s;
-    *s-- = *p;
-    *p++ = aux;
-  }
-}
-
-// strindex: return index of t in s, -1 if none
-int strindex(char *s, char *t)
-{
-  char *t_copy = t, *s_copy = s;
-  int index = 0;
-
-  while (*s)
-  {
-    while (*s_copy++ == *t_copy++ && *t_copy)
-      ;
-
-    if (!*t_copy)
-    {
-      return index;
-    }
-
-    t_copy = t;
-
-    s_copy = ++s;
-
-    index++;
-  }
-
-  return -1;
-}
-
 #define NUMBER 0
 
 // getop: get next operator or numeric operand (for RPC)
@@ -217,4 +170,41 @@ void itoa_ptr(int n, char *s)
   *s = '\0';
 
   reverse(s_start);
+}
+
+void reverse(char *s)
+{
+  char *t = s;
+  char aux;
+
+  while (*(t + 1))
+    t++;
+
+  for (; (t - s > 0); t--, s++)
+  {
+    aux = *s;
+    *s = *t;
+    *t = aux;
+  }
+}
+
+// strindex: return index of t in s, -1 if none
+int strindex(char *s, char *t)
+{
+  char *s_copy;
+  char *t_copy;
+  int index = 0;
+
+  for (index = 0; *s; s++, index++)
+  {
+    for (s_copy = s, t_copy = t; *t_copy == *s_copy; t_copy++, s_copy++)
+      ;
+
+    if (*t_copy == '\0')
+    {
+      return index;
+    }
+  }
+
+  return -1;
 }
