@@ -57,7 +57,6 @@ int main(void)
   }
 
   // Testing getop()
-
   printf("Please type an operand/operator for getop: ");
   int type = getop(s);
 
@@ -66,6 +65,89 @@ int main(void)
   printf("s after getop is equal to \"%s\"\n", s);
 
   return 1;
+}
+
+// atoi: converts string of characters into integer
+int atoi_ptr(char *s)
+{
+  int n, sign;
+
+  for (; isspace(*s); s++)
+    ;
+
+  sign = (*s == '-') ? -1 : 1;
+
+  if (*s == '-' || *s == '+')
+  {
+    s++;
+  }
+
+  for (n = 0; isdigit(*s); s++)
+  {
+    n = n * 10 + (*s - '0');
+  }
+
+  return n * sign;
+}
+
+// itoa: converts integer into string of characters
+void itoa_ptr(int n, char *s)
+{
+  char *s_start = s;
+
+  int sign = (n < 0) ? -1 : 1;
+
+  while (n)
+  {
+    *s++ = abs(n) % 10 + '0';
+    n /= 10;
+  }
+
+  if (sign < 0)
+  {
+    *s++ = '-';
+  }
+
+  *s = '\0';
+
+  reverse(s_start);
+}
+
+void reverse(char *s)
+{
+  char *t = s;
+  char aux;
+
+  while (*(t + 1))
+    t++;
+
+  for (; (t - s > 0); t--, s++)
+  {
+    aux = *s;
+    *s = *t;
+    *t = aux;
+  }
+}
+
+// strindex: return index of t in s, -1 if none
+int strindex(char *s, char *t)
+{
+  char *s_copy;
+  char *t_copy;
+  int index = 0;
+
+  for (index = 0; *s; s++, index++)
+  {
+    for (s_copy = s, t_copy = t; *t_copy == *s_copy; t_copy++, s_copy++)
+      ;
+
+    if (*t_copy == '\0')
+    {
+      return index;
+    }
+  }
+
+  return -1;
 }
 
 #define NUMBER 0
@@ -125,86 +207,4 @@ int getsline(char *s, int lim)
   *s = '\0';
 
   return length;
-}
-
-// atoi: converts string of characters into integer
-int atoi_ptr(char *s)
-{
-  int n, sign;
-
-  for (; isspace(*s); s++)
-    ;
-
-  sign = (*s == '-') ? -1 : 1;
-
-  if (*s == '-' || *s == '+')
-  {
-    s++;
-  }
-
-  for (n = 0; isdigit(*s); s++)
-  {
-    n = n * 10 + (*s - '0');
-  }
-
-  return n * sign;
-}
-
-void itoa_ptr(int n, char *s)
-{
-  char *s_start = s;
-
-  int sign = (n < 0) ? -1 : 1;
-
-  while (n)
-  {
-    *s++ = abs(n) % 10 + '0';
-    n /= 10;
-  }
-
-  if (sign < 0)
-  {
-    *s++ = '-';
-  }
-
-  *s = '\0';
-
-  reverse(s_start);
-}
-
-void reverse(char *s)
-{
-  char *t = s;
-  char aux;
-
-  while (*(t + 1))
-    t++;
-
-  for (; (t - s > 0); t--, s++)
-  {
-    aux = *s;
-    *s = *t;
-    *t = aux;
-  }
-}
-
-// strindex: return index of t in s, -1 if none
-int strindex(char *s, char *t)
-{
-  char *s_copy;
-  char *t_copy;
-  int index = 0;
-
-  for (index = 0; *s; s++, index++)
-  {
-    for (s_copy = s, t_copy = t; *t_copy == *s_copy; t_copy++, s_copy++)
-      ;
-
-    if (*t_copy == '\0')
-    {
-      return index;
-    }
-  }
-
-  return -1;
 }
