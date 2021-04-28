@@ -3,10 +3,10 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAXLINES 5000 // Maximum number of read lines
-#define MAXLEN 1000   // Maximum length of a line
+#define MAXMEMORY 5000 // Maximum storage memory
+#define MAXLINES 50    // Maximum number of read lines
 
-int readlines(char *lineptr[], char *lines, int maxlines, int maxlen);
+int readlines(char *lineptr[], int maxlines, char memory[], int maxmemory);
 void writelines(char *lineptr[], int nlines);
 
 void qsort(char *v[], int left, int right);
@@ -15,10 +15,10 @@ int main(void)
 {
   int nlines;
 
-  char lines[MAXLINES * MAXLEN];
+  char memory[MAXMEMORY];
   char *lineptr[MAXLINES];
 
-  if ((nlines = readlines(lineptr, lines, MAXLINES, MAXLEN)) >= 0)
+  if ((nlines = readlines(lineptr, MAXLINES, memory, MAXMEMORY)) >= 0)
   {
     qsort(lineptr, 0, nlines - 1);
     writelines(lineptr, nlines);
@@ -48,31 +48,27 @@ int getsline(char *s, int maxlen)
   return i;
 }
 
+#define MAXLEN 1000 // Maximum length of a line
+
 // readlines: read input lines
-int readlines(char *lineptr[], char *lines, int maxlines, int maxlen)
+int readlines(char *lineptr[], int maxlines, char memory[], int maxmemory)
 {
   int len, nlines;
-  char *p, line[MAXLEN];
-  char *end_of_lines = lines + maxlines * maxlen;
+  char *p = memory;
+  char line[MAXLEN];
 
   nlines = 0;
-
-  while ((len = getsline(line, maxlen)) > 0)
+  while ((len = getsline(line, MAXLEN)) > 0)
   {
-    if (nlines >= maxlines || lines + len >= end_of_lines)
+    if (nlines >= maxlines || p + len > memory + maxmemory)
     {
       return -1;
     }
     else
     {
-      // Delete newline character
-      line[len - 1] = line[len - 1] == '\n' ? '\0' : line[len - 1];
-
-      strcpy(lines, line);
-
-      // lineptr[nlines] points at beginning of line (each ending in '\0') in lines array
-      lineptr[nlines++] = lines;
-      lines += len + 1;
+      strcpy(p, line);
+      lineptr[nlines++] = p;
+      p += len + 1;
     }
   }
 
