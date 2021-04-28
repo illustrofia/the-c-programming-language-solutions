@@ -30,7 +30,7 @@ int main(void)
 
   if (day && month)
   {
-    printf("The %d'th day of the year %d is %s %d.\n", yearday, year, months[month], day);
+    printf("Day %d of the year %d is %s %d.\n", yearday, year, months[month], day);
   }
 
   if (day && month)
@@ -50,7 +50,7 @@ int day_of_year(int year, int month, int day)
 
   leap = year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
 
-  if (!(month > 0 && month <= 12))
+  if (month < 1 || month > 12)
   {
     printf("error: impossible month value (%i)\n", month);
     return -1;
@@ -76,7 +76,7 @@ void month_day(int year, int yearday, int *pmonth, int *pday)
 
   leap = year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
 
-  if (yearday <= 0 || yearday > ((leap) ? 366 : 365))
+  if (yearday < 1 || yearday > ((leap) ? 366 : 365))
   {
     printf("error: impossible yearday value (%i)\n", yearday);
     return;

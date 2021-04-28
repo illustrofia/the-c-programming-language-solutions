@@ -4,6 +4,8 @@
 #define MAXMEMORY 5000 // Maximum storage memory
 #define MAXLINES 50    // Maximum number of read lines
 
+char *lineptr[MAXLINES];
+
 int readlines(char *lineptr[], int maxlines, char memory[], int maxmemory);
 void writelines(char *lineptr[], int nlines);
 
@@ -14,7 +16,6 @@ int main(void)
   int nlines;
 
   char memory[MAXMEMORY];
-  char *lineptr[MAXLINES];
 
   if ((nlines = readlines(lineptr, MAXLINES, memory, MAXMEMORY)) >= 0)
   {
