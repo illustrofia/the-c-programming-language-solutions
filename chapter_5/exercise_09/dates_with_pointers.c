@@ -1,5 +1,3 @@
-// La parole est d'argent, le silence est d'or.
-
 #include <stdio.h>
 
 int day_of_year(int year, int month, int day);
@@ -34,14 +32,14 @@ static char daytab[2][13] = {
 // day_of_year: set day of year from month & day
 int day_of_year(int year, int month, int day)
 {
-  int i, leap;
+  int leap;
   char *p;
 
   leap = year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
 
   p = daytab[leap];
 
-  if (!(month > 0 && month <= 12))
+  if (month < 1 || month > 12)
   {
     printf("error: impossible month value (%i).\n", month);
     return -1;
@@ -52,10 +50,8 @@ int day_of_year(int year, int month, int day)
     return -1;
   }
 
-  // For explanation, check note I at end of file
   while (month--)
   {
-    // *p is equivalent to daytab[leap][whatever_value_p_points to]
     day += *p++;
   }
 
@@ -65,22 +61,21 @@ int day_of_year(int year, int month, int day)
 // month_day: set month, day from day of year
 void month_day(int year, int yearday, int *pmonth, int *pday)
 {
-  int i, leap;
+  int leap;
   char *p;
 
-  leap = year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
-
-  p = daytab[leap];
-
-  if (yearday <= 0 || yearday > ((leap) ? 366 : 365))
+  if (yearday < 1 || yearday > ((leap) ? 366 : 365))
   {
     printf("error: impossible yearday value (%i).\n", yearday);
     return;
   }
 
+  leap = year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
+
+  p = daytab[leap];
+
   *pday = yearday;
 
-  // For explanation, check note II at end of file
   while (*pday > *p)
   {
     *pday -= *p++;
@@ -100,17 +95,3 @@ char *month_name(int n)
 
   return (n < 1 || n > 12) ? name[0] : name[n];
 }
-
-/*
-Notes
-
-I:
-    We add to the value of 'day' the value of all the months until the one
-    received as an argument. Example: if month is 3, we add the number of
-    days in month 1 and 2 to 'day'
-
-II:
-    Drop the yearday value by number of days in each month, until it's less
-    than the number of days in some month. Then we've found the month and
-    day.
-*/
