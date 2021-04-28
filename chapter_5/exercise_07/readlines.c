@@ -1,5 +1,3 @@
-// Readlines stores lines in an array supplied by main
-
 #include <stdio.h>
 #include <string.h>
 

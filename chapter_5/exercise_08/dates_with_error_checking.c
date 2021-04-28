@@ -1,5 +1,3 @@
-// La parole est d'argent, le silence est d'or.
-
 #include <stdio.h>
 
 int day_of_year(int year, int month, int day);
