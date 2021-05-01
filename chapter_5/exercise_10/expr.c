@@ -1,29 +1,24 @@
-// La parole est d'argent, le silence est d'or.
-
 #include <stdio.h>
-#include <ctype.h>
 #include <stdlib.h>
+#include <ctype.h>
 
-#define MAXLEN 100
+#define MAXLEN 100 // Maximum length of operand
 #define NUMBER 0
-#define MAXVAL 100
 
-int getop(char *s, char *op);
+int getop(char *arg);
 void push(double f);
 double pop(void);
 
 int main(int argc, char *argv[])
 {
-  char op[MAXLEN];
   int op2;
 
-  int i;
-  for (i = 0; i < argc; ++i)
+  for (int i = 1; i < argc; i++)
   {
-    switch (getop(argv[i], op))
+    switch (getop(argv[i]))
     {
     case NUMBER:
-      push(atof(op));
+      push(atof(argv[i]));
       break;
 
     case '+':
@@ -58,7 +53,7 @@ int main(int argc, char *argv[])
       break;
 
     default:
-      printf("error: unknown command %s\n", op);
+      printf("error: unknown command %s\n", argv[i]);
       break;
     }
   }
@@ -68,44 +63,33 @@ int main(int argc, char *argv[])
   return 0;
 }
 
-// getop: get next operator or numeric operand (for RPC)
-int getop(char *s, char *op)
+int getop(char *arg)
 {
-
-  *op = *s;
-
-  *(op + 1) = '\0';
-
-  // Not a number
-  if (!isdigit(*op) && *op != '.')
+  // Skip blanks
+  while (isblank(*arg))
   {
-    return *op;
+    arg++;
   }
 
-  // Collect integer part
-  if (isdigit(*op))
+  // Not a number?
+  if (!isdigit(*arg) && *arg != '.' && *arg != '-')
   {
-    while (isdigit(*(++op) = *(++s)))
-      ;
+    return *arg;
   }
 
-  // Collect fractional part
-  if (*op == '.')
+  // Negative number or just '-' operator?
+  if (*arg == '-')
   {
-    while (isdigit(*(++op) = *(++s)))
-      ;
+    if (!isdigit(*(arg + 1)) && *(arg + 1) != '.')
+    {
+      return '-';
+    }
   }
-
-  // Push character back to input
-  if (*op != EOF)
-  {
-    ungetc(*op, stdin);
-  }
-
-  *op = '\0';
 
   return NUMBER;
 }
+
+#define MAXVAL 100
 
 int sp = 0;
 double val[MAXVAL];
