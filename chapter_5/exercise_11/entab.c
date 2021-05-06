@@ -1,41 +1,49 @@
-// Replaces strings of blanks by the minimum number
-// of tabs and blanks to achieve the same spacing.
-
 #include <stdio.h>
-#include <stdlib.h>
-#define TAB 4
 
-int main(int argc, char *argv[])
+#define TAB 8
+
+int main(void)
 {
   int c;
-  int blanks = 0;
-  int tab;
+  int spaces;
+  int line_position;
 
-  tab = (argc > 1) ? atoi(argv[1]) : TAB;
-
+  line_position = 0;
+  spaces = 0;
   while ((c = getchar()) != EOF)
   {
+    line_position++;
+
     if (c == ' ')
     {
-      blanks++;
+      spaces++;
 
-      if (blanks == tab)
+      if (line_position % TAB == 0 && spaces > 0)
       {
         putchar('\t');
-
-        blanks = 0;
+        spaces = 0;
       }
     }
     else
     {
-      for (blanks; blanks > 0; blanks--)
+      while (spaces)
       {
         putchar(' ');
+        spaces--;
       }
 
       putchar(c);
     }
-  }
 
-  return 0;
+    if (c == '\n')
+    {
+      line_position = 0;
+    }
+  }
 }
+
+/**
+ *
+ *
+ *
+**/
