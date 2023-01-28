@@ -8,7 +8,6 @@ int main(void)
 {
   int fahr;
 
-  // Print a header before the table
   printf("Fahrenheit \t Celsius\n\n");
 
   for (fahr = 300; fahr >= 0; fahr -= 20)

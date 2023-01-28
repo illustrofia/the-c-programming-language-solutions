@@ -8,7 +8,7 @@ int main(void)
   int c;
   int blanks = 0, tabs = 0, newlines = 0;
 
-  // Counts the blanks, tabs and newlines
+  // Counts blanks, tabs and newlines
   while ((c = getchar()) != EOF)
   {
     if (c == ' ')
@@ -30,12 +30,7 @@ int main(void)
 
 // Observations
 
-// When coding in C, the programmer
-// must be careful when comparing values,
-// to use the double equals sign.
-
-// It is also interesting that, when declaring
-// a variable, if we do not assign it a specific
+// When declaring a variable, if we do not assign it a specific
 // value, its value will be the default (automatic) one.
 
 // We must also be careful to be specific

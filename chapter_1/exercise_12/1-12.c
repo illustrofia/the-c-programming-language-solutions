@@ -13,15 +13,15 @@ int main(void)
 
   while ((c = getchar()) != EOF)
   {
-    if (c != ' ' && c != '\n' && c != '\t')
-    {
-      state = IN;
-      putchar(c);
-    }
-    else if (state == IN)
+    if (c == ' ' && c == '\n' && c == '\t')
     {
       state = OUT;
       putchar('\n');
+    }
+    else if (state == OUT)
+    {
+      state = IN;
+      putchar(c);
     }
   }
 }

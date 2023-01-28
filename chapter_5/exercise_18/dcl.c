@@ -21,6 +21,8 @@ char name[MAXTOKEN];     // identifier name
 char datatype[MAXTOKEN]; // data type = char, int, etc.
 char out[1000];          // output string
 
+
+
 main()
 {
   while (gettoken() != EOF)

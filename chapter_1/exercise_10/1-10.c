@@ -1,6 +1,6 @@
 // Copies input to output, replacing each
 // tab by \t, each backspace by \b and
-// each backspace by \\
+// each backsslack by \\
 
 #include <stdio.h>
 
@@ -13,7 +13,7 @@ int main(void)
 
     if (c == '\b')
     {
-      putchar('\\'); // Prints a backslash
+      putchar('\\');
       putchar('b');
     }
     else if (c == '\t')
